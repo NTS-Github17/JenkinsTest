@@ -16,7 +16,7 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("==================== Application running ====================");
-		System.out.println("====================Hello World!====================");
+		System.out.println("======================================== Hello World! ========================================");
 	}
 
 }
