@@ -11,13 +11,12 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 	public static void main(String[] args) {
 		logger.info("==================== Application started ====================");
 		SpringApplication.run(Application.class, args);
-
-		System.out.println("====================Hello World!====================");
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
 		logger.info("==================== Application running ====================");
+		System.out.println("====================Hello World!====================");
 	}
 
 }
