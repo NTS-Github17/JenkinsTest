@@ -9,7 +9,7 @@ pipeline {
     }
     environment {
 //         DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
+        DOCKERHUB_CREDENTIALS = 'dockerhub_id'
     }
     stages {
         stage('Checkout SCM') {
@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
 //                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS) {
+                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
                         dockerImage.push()
                     }
                 }
