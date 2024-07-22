@@ -58,7 +58,7 @@ pipeline {
             steps {
                 script {
 //                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKERHUB_CREDENTIALS) {
                         dockerImage.push()
                     }
                 }
