@@ -23,5 +23,4 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 		String unusedVariable = "This variable is not used";
 		System.out.println("This is a test for SonarQube");
 	}
-
 }
