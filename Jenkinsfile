@@ -41,7 +41,7 @@ pipeline {
         stage('Login to Docker Registry') {
             steps {
                 script {
-                    sh 'echo $DOCKER_CREDENTIALS_PSW | docker login ${DOCKER_REGISTRY} -u $DOCKER_CREDENTIALS_USR --password-stdin'
+                    sh 'docker login 10.79.60.7 -u "phuhk" -p "123456a@"'
                 }
             }
         }
