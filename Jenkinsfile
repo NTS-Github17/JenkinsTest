@@ -6,7 +6,7 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
-    env {
+    environment {
         DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
     }
     stages {
