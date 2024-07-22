@@ -40,7 +40,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("tiensy05/ci-cd-test:${env.BUILD_NUMBER}")
+                bat 'docker build -t tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
+//                     dockerImage = docker.build("tiensy05/ci-cd-test:${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -48,7 +49,7 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    bat 'echo %DOCKERHUB_CREDENTIALS_PSW% | docker login -u %DOCKERHUB_CREDENTIALS_USR% --password-stdin'
+                    bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
         }
@@ -56,7 +57,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    dockerImage.push()
+                    bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
+//                     dockerImage.push()
                 }
             }
         }
