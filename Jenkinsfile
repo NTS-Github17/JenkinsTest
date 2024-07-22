@@ -25,14 +25,14 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat 'mvn -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package'
             }
         }
 
         stage('Scan') {
                 steps {
                     withSonarQubeEnv(installationName: 'sonar') {
-                        bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                 }
             }
         }
@@ -40,7 +40,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-//                 bat 'docker build -t tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
                     dockerImage = docker.build("tiensy05/ci-cd-test:${env.BUILD_NUMBER}")
                 }
             }
@@ -58,7 +57,7 @@ pipeline {
             steps {
                 script {
 //                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+                    docker.withRegistry('10.79.60.7:8010', DOCKERHUB_CREDENTIALS) {
                         dockerImage.push()
                     }
                 }
