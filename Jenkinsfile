@@ -9,7 +9,8 @@ pipeline {
     }
     environment {
 //         DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
-        DOCKERHUB_CREDENTIALS = 'dockerhub_id'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
+        DOCKER_REGISTRY = '10.79.60.7:8010'
     }
     stages {
         stage('Checkout SCM') {
@@ -33,6 +34,14 @@ pipeline {
                 steps {
                     withSonarQubeEnv(installationName: 'sonar') {
                         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
+        }
+
+        stage('Login to Docker Registry') {
+            steps {
+                script {
+                    sh 'echo $DOCKER_CREDENTIALS_PSW | docker login ${DOCKER_REGISTRY} -u $DOCKER_CREDENTIALS_USR --password-stdin'
                 }
             }
         }
