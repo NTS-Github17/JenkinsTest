@@ -17,13 +17,11 @@ pipeline {
                 ])
             }
         }
-
         stage('Build') {
             steps {
                 bat 'mvn -B -DskipTests clean package'
             }
         }
-        
         stage('Scan') {
                 steps {
                     withSonarQubeEnv(installationName: 'sonar') {
