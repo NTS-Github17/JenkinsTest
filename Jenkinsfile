@@ -9,8 +9,8 @@ pipeline {
     }
     environment {
 //         DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
-        DOCKER_REGISTRY = '10.79.60.7:8010'
+        DOCKERHUB_CREDENTIALS = 'dockerhub_id'
+//         DOCKER_REGISTRY = '10.79.60.7:8010'
     }
     stages {
         stage('Checkout SCM') {
@@ -38,19 +38,20 @@ pipeline {
             }
         }
 
-        stage('Login to Docker Registry') {
-            steps {
-                script {
-                    sh 'docker login 10.79.60.7 -u "phuhk" -p "123456a@"'
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
                     sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${env.BUILD_NUMBER}'
 //                     dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+
+        stage('Login to Docker Registry') {
+            steps {
+                script {
+                    sh 'docker login 10.79.60.7 -u "phuhk" -p "123456a@"'
                 }
             }
         }
