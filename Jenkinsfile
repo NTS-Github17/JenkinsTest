@@ -45,12 +45,18 @@ pipeline {
             }
         }
 
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    bat 'echo $DOCKERHUB_CREDENTIALS_PSW% | docker login --u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', 'DOCKERHUB_CREDENTIALS') {
-                        dockerImage.push()
-                    }
+                    dockerImage.push()
                 }
             }
         }
