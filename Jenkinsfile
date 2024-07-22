@@ -7,6 +7,17 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     stages {
+        stage('Checkout SCM') {
+            steps {
+                // Checkout code from SCM (e.g., Git)
+                    checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
+                ])
+            }
+        }
+
         stage('Build') {
             steps {
                 bat 'mvn -B -DskipTests clean package'
