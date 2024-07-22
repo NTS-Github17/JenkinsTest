@@ -8,7 +8,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     environment {
-        def buildNumber = env.BUILD_NUMBER
+        def buildNumber = "${env.BUILD_NUMBER}"
         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
 //         DOCKER_REGISTRY = '10.79.60.7:8010'
     }
