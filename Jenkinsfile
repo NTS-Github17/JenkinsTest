@@ -8,7 +8,8 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
+//         DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub_id')
     }
     stages {
         stage('Checkout SCM') {
@@ -36,29 +37,29 @@ pipeline {
             }
         }
 
-
         stage('Build Docker Image') {
             steps {
                 script {
-                bat 'docker build -t tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-//                     dockerImage = docker.build("tiensy05/ci-cd-test:${env.BUILD_NUMBER}")
+//                 bat 'docker build -t tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
+                    dockerImage = docker.build("tiensy05/ci-cd-test:${env.BUILD_NUMBER}")
                 }
             }
         }
 
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                    bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                }
-            }
-        }
+//         stage('Login to Docker Hub') {
+//             steps {
+//                 script {
+//                     bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+//                 }
+//             }
+//         }
 
         stage('Push Docker Image') {
             steps {
                 script {
-                    bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-//                     dockerImage.push()
+//                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
+                        dockerImage.push()
                 }
             }
         }
