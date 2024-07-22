@@ -6,6 +6,9 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
+    env {
+        DOCKERHUB_CREDENTIALS = credentials('tiensy05-dockerhub')
+    }
     stages {
         stage('Checkout SCM') {
             steps {
@@ -28,6 +31,24 @@ pipeline {
                 steps {
                     withSonarQubeEnv(installationName: 'sonar') {
                         bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("tiensy05/ci-cd-test:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKERHUB_CREDENTIALS') {
+                        dockerImage.push()
+                    }
                 }
             }
         }
