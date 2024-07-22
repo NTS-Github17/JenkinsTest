@@ -60,6 +60,7 @@ pipeline {
 //                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
                     docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
                         dockerImage.push()
+                    }
                 }
             }
         }
