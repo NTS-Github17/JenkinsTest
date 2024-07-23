@@ -36,10 +36,18 @@ pipeline {
                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
                 timeout(time: 1, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
-                    if ("${json.projectStatus.status}" == "ERROR") {
-                        error("Quality Gate failed")
+                    script {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
                     }
                 }
+
+//                 def json = readJSON text: sh(script: 'curl -u admin:admin http://localhost:9000/api/qualitygates/project_status?projectKey=my_project', returnStdout: true)
+//                     if (json.projectStatus.status == "ERROR") {
+//                         error("Quality Gate failed")
+//                     }
 //
 //                 if ("${currentBuild.result}" == "FAILURE") {
 //                     error("Quality Gate failed")
