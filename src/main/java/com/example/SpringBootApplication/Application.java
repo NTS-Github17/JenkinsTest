@@ -40,4 +40,17 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 			// Do nothing
 		}
 	}
+
+	public void testSonarQubeWarning() {
+		int a = 0;
+		int b = 0;
+		int c = a + b;
+		System.out.println("The sum of a and b is: " + c);
+	}
+
+//	public void divisionByZero() {
+//		int number = 10;
+//		int result = number / 0;
+//		System.out.println("Result: " + result);
+//	}
 }
