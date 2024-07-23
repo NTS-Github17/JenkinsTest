@@ -33,6 +33,19 @@ pipeline {
                 withSonarQubeEnv(installationName: 'sonar') {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                 }
+//                 def json = readJSON text: sh(script: 'curl -u admin:admin http://localhost:9000/api/qualitygates/project_status?projectKey=my_project', returnStdout: true)
+//                     if (json.projectStatus.status == "ERROR") {
+//                         error("Quality Gate failed")
+//                     }
+//
+//                 if ("${currentBuild.result}" == "FAILURE") {
+//                     error("Quality Gate failed")
+//                 }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
@@ -43,15 +56,6 @@ pipeline {
                         }
                     }
                 }
-
-//                 def json = readJSON text: sh(script: 'curl -u admin:admin http://localhost:9000/api/qualitygates/project_status?projectKey=my_project', returnStdout: true)
-//                     if (json.projectStatus.status == "ERROR") {
-//                         error("Quality Gate failed")
-//                     }
-//
-//                 if ("${currentBuild.result}" == "FAILURE") {
-//                     error("Quality Gate failed")
-//                 }
             }
         }
 
