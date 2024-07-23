@@ -3,7 +3,6 @@ pipeline {
 //     tools {
 //             jdk 'JDK17'
 //     }
-
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
@@ -30,14 +29,14 @@ pipeline {
         }
 
         stage('Scan') {
-                steps {
-                    withSonarQubeEnv(installationName: 'sonar') {
-                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                }
-                // Nếu sonar cho ra kết quả fail thì build sẽ fail
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-
+            steps {
+                withSonarQubeEnv(installationName: 'sonar') {
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+            }
+            // Nếu sonar cho ra kết quả fail thì build sẽ fail
+            timeout(time: 5, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+            }
 //                 if ("${json.projectStatus.status}" == "ERROR") {
 //                     error("Quality Gate failed")
 //                 }
