@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class Application implements org.springframework.boot.CommandLineRunner {
@@ -14,6 +15,11 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 	public static void main(String[] args) {
 		logger.info("==================== Application started ====================");
 		SpringApplication.run(Application.class, args);
+
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter your name: ");
+		String name = sc.nextLine();
+		System.out.println("Welcome to Resdii, " + name);
 	}
 
 	@Override
