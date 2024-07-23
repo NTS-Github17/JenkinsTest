@@ -9,7 +9,6 @@ pipeline {
     }
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
-//         DOCKER_REGISTRY = '10.79.60.7:8010'
     }
     stages {
         stage('Checkout SCM') {
@@ -37,43 +36,38 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
-                        sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
-                // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER")
-                    }
-                }
-            }
-        }
-
-
-        stage('Login to Docker Registry') {
-            steps {
-                script {
-                    sh 'docker login 10.79.60.7 -u "phuhk" -p "123456a@"'
-                }
-            }
-        }
-
-//         stage('Login to Docker Hub') {
+//         stage('Build Docker Image') {
 //             steps {
 //                 script {
-//                     bat 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+//                 withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
+//                     sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
+//                     // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
+//                     }
 //                 }
 //             }
 //         }
 
-        stage('Push Docker Image') {
+        stage('Build Docker Image') {
             steps {
                 script {
-//                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-                    docker.withRegistry('10.79.60.7:8010', DOCKERHUB_CREDENTIALS) {
-                        dockerImage.push()
+                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7') {
+                    sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
+                    sh 'docker push 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
+                    // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
                     }
                 }
             }
         }
+
+//         stage('Push Docker Image') {
+//             steps {
+//                 script {
+// //                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
+//                     docker.withRegistry('10.79.60.7:8010', DOCKERHUB_CREDENTIALS) {
+//                         dockerImage.push()
+//                     }
+//                 }
+//             }
+//         }
     }
 }
