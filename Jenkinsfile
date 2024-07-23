@@ -50,7 +50,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7') {
+                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                     sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
                     sh 'docker push 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
                     // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
