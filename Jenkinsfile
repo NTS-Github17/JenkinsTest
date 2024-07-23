@@ -46,14 +46,12 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
+            //  waitForQualityGate abortPipeline: true
                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
                 timeout(time: 5, unit: 'MINUTES') {
-//                     waitForQualityGate abortPipeline: true
-                    script {
-                        def qg = waitForQualityGate()
-                        if (qg.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        }
+                    def qg = waitForQualityGate()
+                    if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
                     }
                 }
             }
