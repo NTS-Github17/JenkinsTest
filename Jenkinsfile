@@ -36,9 +36,9 @@ pipeline {
                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
                 timeout(time: 1, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
-                }
-                if ("${json.projectStatus.status}" == "ERROR") {
-                    error("Quality Gate failed")
+                    if ("${json.projectStatus.status}" == "ERROR") {
+                        error("Quality Gate failed")
+                    }
                 }
 //
 //                 if ("${currentBuild.result}" == "FAILURE") {
