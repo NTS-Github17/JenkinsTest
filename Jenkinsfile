@@ -32,11 +32,11 @@ pipeline {
             steps {
                 withSonarQubeEnv(installationName: 'sonar') {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-            }
-            // Nếu sonar cho ra kết quả fail thì build sẽ fail
-            timeout(time: 5, unit: 'MINUTES') {
-                waitForQualityGate abortPipeline: true
-            }
+                }
+                // Nếu sonar cho ra kết quả fail thì build sẽ fail
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
 //                 if ("${json.projectStatus.status}" == "ERROR") {
 //                     error("Quality Gate failed")
 //                 }
@@ -95,7 +95,7 @@ pipeline {
                     <p>Project: ${env.JOB_NAME}</p>
                     <p>Build Number: ${env.BUILD_NUMBER}</p>
                     <p>Cause: ${currentBuild.description}</p>""",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']])
         }
     }
 }
