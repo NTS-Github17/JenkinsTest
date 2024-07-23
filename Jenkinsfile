@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                 withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
-                        sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
+                        sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
                 // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER")
                     }
                 }
