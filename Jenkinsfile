@@ -47,20 +47,10 @@ pipeline {
             }
         }
 
-//         stage('Build Docker Image') {
-//             steps {
-//                 script {
-//                 withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
-//                     sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
-//                     // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
-//                     }
-//                 }
-//             }
-//         }
-
         stage('Build Docker Image') {
             steps {
                 script {
+//                     withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                         sh 'docker build -t $DOCKER_REGISTRY:${BUILD_NUMBER} .'
                         sh 'docker push $DOCKER_REGISTRY:${BUILD_NUMBER}'
@@ -70,9 +60,9 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
+        // stage('Deploy') {
+        //     steps {
+        //         script {
 //                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
 //                         sh '''
 //                         docker pull $DOCKER_REGISTRY:${BUILD_NUMBER}
@@ -81,9 +71,9 @@ pipeline {
 //                         docker run -d --name ci-cd-test -p 8080:8080 $DOCKER_REGISTRY:${BUILD_NUMBER}
 //                         '''
 //                     }
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
     }
     // Gửi email thông báo kết quả build trong trường hợp build fail
     post {
@@ -95,7 +85,8 @@ pipeline {
                     <p>Project: ${env.JOB_NAME}</p>
                     <p>Build Number: ${env.BUILD_NUMBER}</p>
                     <p>Cause: ${currentBuild.description}</p>""",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']])
+                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+            )
         }
     }
 }
