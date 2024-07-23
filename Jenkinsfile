@@ -51,7 +51,7 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     script {
                         waitForQualityGate abortPipeline: true
-                        def json = sh(script: 'curl -s -u admin:admin http://10.79.60.7:9000/api/qualitygates/project_status?projectKey=my_project', returnStdout: true)
+                        def json = sh(script: 'curl -s -u admin:admin http://10.79.60.7:9000/api/qualitygates/project_status?projectKey=SpringBootApplication', returnStdout: true)
                         def result = readJSON text: json
                         if (result.projectStatus.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${result.projectStatus.status}"
