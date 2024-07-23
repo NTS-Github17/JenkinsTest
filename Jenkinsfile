@@ -41,8 +41,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
-//                     dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:${env.BUILD_NUMBER}")
+//                     sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
+                    dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:${env.BUILD_NUMBER}")
                 }
             }
         }
