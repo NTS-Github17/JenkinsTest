@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -33,11 +34,16 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 		System.out.println("This is a test for SonarQube");
 	}
 
-	public void testSonarQubeError() {
+	public void testSonarQubeError() throws IOException {
+		FileInputStream file = null;
 		try {
-			FileInputStream file = new FileInputStream("non_existent_file.txt");
+			file = new FileInputStream("non_existent_file.txt");
 		} catch (FileNotFoundException e) {
 			// Do nothing
+		} finally {
+			if (file != null) {
+				file.close();
+			}
 		}
 	}
 
