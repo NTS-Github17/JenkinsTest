@@ -34,7 +34,7 @@ pipeline {
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                 }
                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
-                timeout(time: 1, unit: 'MINUTES') {
+                timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                     script {
                         def qg = waitForQualityGate()
