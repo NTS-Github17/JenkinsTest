@@ -51,10 +51,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-                    sh 'docker build -t $DOCKER_REGISTRY:${BUILD_NUMBER} .'
-                    sh 'docker push $DOCKER_REGISTRY:${BUILD_NUMBER}'
-                    // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
+                    withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
+                        sh 'docker build -t $DOCKER_REGISTRY:${BUILD_NUMBER} .'
+                        sh 'docker push $DOCKER_REGISTRY:${BUILD_NUMBER}'
+                        // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
                     }
                 }
             }
@@ -63,12 +63,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh '''
-                    docker pull $DOCKER_REGISTRY:${BUILD_NUMBER}
-                    docker stop ci-cd-test || true
-                    docker rm ci-cd-test || true
-                    docker run -d --name ci-cd-test -p 8080:8080 $DOCKER_REGISTRY:${BUILD_NUMBER}
-                    '''
+                    withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
+                        sh '''
+                        docker pull $DOCKER_REGISTRY:${BUILD_NUMBER}
+                        docker stop ci-cd-test || true
+                        docker rm ci-cd-test || true
+                        docker run -d --name ci-cd-test -p 8080:8080 $DOCKER_REGISTRY:${BUILD_NUMBER}
+                        '''
+                    }
                 }
             }
         }
