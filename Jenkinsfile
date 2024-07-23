@@ -8,7 +8,6 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     environment {
-//         def buildNumber = "${env.BUILD_NUMBER}"
         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
 //         DOCKER_REGISTRY = '10.79.60.7:8010'
     }
@@ -41,8 +40,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-//                     sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
-                    dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER")
+                withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
+                        sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
+                // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER")
+                    }
                 }
             }
         }
