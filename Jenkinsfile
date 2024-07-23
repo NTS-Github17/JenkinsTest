@@ -8,7 +8,8 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
     environment {
-        DOCKERHUB_CREDENTIALS = 'dockerhub_id'
+        DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
+//         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
     }
     stages {
         stage('Checkout SCM') {
@@ -51,23 +52,12 @@ pipeline {
             steps {
                 script {
                 withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-                    sh 'docker build -t 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER} .'
-                    sh 'docker push 10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}'
+                    sh 'docker build -t $DOCKER_REGISTRY:${BUILD_NUMBER} .'
+                    sh 'docker push $DOCKER_REGISTRY:${BUILD_NUMBER}'
                     // dockerImage = docker.build("10.79.60.7:8010/ci-cd-test:$BUILD_NUMBER .")
                     }
                 }
             }
         }
-
-//         stage('Push Docker Image') {
-//             steps {
-//                 script {
-// //                     bat 'docker push tiensy05/ci-cd-test:${env.BUILD_NUMBER}'
-//                     docker.withRegistry('10.79.60.7:8010', DOCKERHUB_CREDENTIALS) {
-//                         dockerImage.push()
-//                     }
-//                 }
-//             }
-//         }
     }
 }
