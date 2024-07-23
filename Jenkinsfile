@@ -37,9 +37,9 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
-//                 if ("${json.projectStatus.status}" == "ERROR") {
-//                     error("Quality Gate failed")
-//                 }
+                if ("${json.projectStatus.status}" == "ERROR") {
+                    error("Quality Gate failed")
+                }
 //
 //                 if ("${currentBuild.result}" == "FAILURE") {
 //                     error("Quality Gate failed")
