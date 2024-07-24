@@ -62,6 +62,7 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 			System.out.println("Result: " + result);
 		} catch (ArithmeticException e) {
 			// Do nothing
+			System.out.println("Error: Division by zero is not allowed.");
 		}
 	}
 }
