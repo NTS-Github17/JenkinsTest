@@ -73,21 +73,22 @@ pipeline {
             }
         }
 
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-//                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-//                         sh '''
-//                         docker pull $DOCKER_REGISTRY:${BUILD_NUMBER}
-//                         docker stop ci-cd-test || true
-//                         docker rm ci-cd-test || true
-//                         docker run -d --name ci-cd-test -p 8080:8080 $DOCKER_REGISTRY:${BUILD_NUMBER}
-//                         '''
-//                     }
-        //         }
-        //     }
-        // }
+        stage('Deploy') {
+            steps {
+                script {
+                    sshagent(['ssh-credentials-id']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no root@10.79.60.28 'docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \
+                        docker stop ci-cd-test || true && \
+                        docker rm ci-cd-test || true && \
+                        docker run -d --name ci-cd-test -p 8080:8080 $DOCKER_REGISTRY:${BUILD_NUMBER}'
+                        """
+                    }
+                }
+            }
+        }
     }
+
     // Gửi email thông báo kết quả build trong trường hợp build fail
 //     post {
 //         failure {
