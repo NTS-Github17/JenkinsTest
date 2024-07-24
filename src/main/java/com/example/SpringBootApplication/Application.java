@@ -66,10 +66,13 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 		}
 	}
 
-	public void arrayOutOfBounds() {
-    try {
-        int[] numbers = {1, 2, 3};
-        System.out.println("Fourth number in the array is: " + numbers[3]);
-    	}
+	public void stringToInteger() {
+		try {
+			String str = "abc";
+			int number = Integer.parseInt(str);
+			System.out.println("Converted number: " + number);
+		} catch (NumberFormatException e) {
+			System.out.println("Error: Cannot convert string to integer.");
+		}
 	}
 }
