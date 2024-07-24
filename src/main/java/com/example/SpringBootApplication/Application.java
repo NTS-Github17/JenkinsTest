@@ -3,6 +3,7 @@ package com.example.SpringBootApplication;
 import org.slf4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,11 +17,10 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 	public static void main(String[] args) {
 		logger.info("==================== Application started ====================");
 		SpringApplication.run(Application.class, args);
-
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter your name: ");
-		String name = sc.nextLine();
-		System.out.println("Welcome to Resdii, " + name);
+//		Scanner sc = new Scanner(System.in);
+//		System.out.println("Enter your name: ");
+//		String name = sc.nextLine();
+//		System.out.println("Welcome to Resdii, " + name);
 	}
 
 	@Override
@@ -65,4 +65,13 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 			System.out.println("Error: Division by zero is not allowed.");
 		}
 	}
+
+	public void arrayOutOfBounds() {
+    try {
+        int[] numbers = {1, 2, 3};
+        System.out.println("Fourth number in the array is: " + numbers[3]);
+    } catch (ArrayIndexOutOfBoundsException e) {
+        // System.out.println("Error: Array index is out of bounds.");
+    }
+}
 }

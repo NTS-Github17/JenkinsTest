@@ -1,1 +1,8 @@
-spring.application.name=SpringBootApplication
+spring:
+  application:
+    name: SpringBootApplication
+
+server:
+  port: 8083
+  servlet:
+    context-path: /test
