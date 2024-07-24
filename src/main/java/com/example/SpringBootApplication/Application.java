@@ -70,8 +70,6 @@ public class Application implements org.springframework.boot.CommandLineRunner {
     try {
         int[] numbers = {1, 2, 3};
         System.out.println("Fourth number in the array is: " + numbers[3]);
-    } catch (ArrayIndexOutOfBoundsException e) {
-        // System.out.println("Error: Array index is out of bounds.");
-    }
-}
+    	}
+	}
 }
