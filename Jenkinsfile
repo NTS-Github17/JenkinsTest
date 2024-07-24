@@ -96,7 +96,9 @@ pipeline {
     // Gửi email thông báo kết quả build trong trường hợp build fail
     post {
         failure {
-            email text(
+            echo 'JOB_NAME: ${env.JOB_NAME} - BUILD_NUMBER: ${env.BUILD_NUMBER} - BUILD_STATUS: ${currentBuild.result} - BUILD_DESCRIPTION: ${currentBuild.description}'
+            echo '[$class: "CulpritsRecipientProvider"], [$class: "DevelopersRecipientProvider"]'
+            emailext (
                 subject: "Jenkins Pipeline Failure: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
 //                 subject: "Build failed: ${currentBuild.fullDisplayName}",
                 body: """<p>Build failed in Jenkins Pipeline:</p>
