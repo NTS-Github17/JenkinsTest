@@ -55,9 +55,13 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 		System.out.println("The sum of a and b is: " + c);
 	}
 
-//	public void divisionByZero() {
-//		int number = 10;
-//		int result = number / 0;
-//		System.out.println("Result: " + result);
-//	}
+	public void divisionByZero() {
+		try {
+			int number = 10;
+			int result = number / 0;
+			System.out.println("Result: " + result);
+		} catch (ArithmeticException e) {
+			// Do nothing
+		}
+	}
 }
