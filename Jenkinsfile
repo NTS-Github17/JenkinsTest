@@ -46,12 +46,13 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
+                echo 'Checking Quality Gate...'
             //  waitForQualityGate abortPipeline: true
                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
                 timeout(time: 10, unit: 'MINUTES') {
                     script {
                         waitForQualityGate abortPipeline: true
-                        def json = sh(script: 'curl -s -u admin:admin http://10.79.60.7:9000/api/qualitygates/project_status?projectKey=SpringBootApplication', returnStdout: true)
+                        def json = sh(script: 'curl -s -u admin:Resdii@168861 http://10.79.60.7:9000/api/qualitygates/project_status?projectKey=SpringBootApplication', returnStdout: true)
                         def result = readJSON text: json
                         if (result.projectStatus.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${result.projectStatus.status}"
