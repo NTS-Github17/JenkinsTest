@@ -40,11 +40,12 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 			file = new FileInputStream("non_existent_file.txt");
 		} catch (FileNotFoundException e) {
 			// Do nothing
-		} finally {
-			if (file != null) {
-				file.close();
-			}
 		}
+//		finally {
+//			if (file != null) {
+//				file.close();
+//			}
+//		}
 	}
 
 	public void testSonarQubeWarning() {
