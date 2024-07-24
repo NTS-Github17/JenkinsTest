@@ -65,14 +65,4 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 			System.out.println("Error: Division by zero is not allowed.");
 		}
 	}
-
-	public void stringToInteger() {
-		try {
-			String str = "abc";
-			int number = Integer.parseInt(str);
-			System.out.println("Converted number: " + number);
-		} catch (NumberFormatException e) {
-			System.out.println("Error: Cannot convert string to integer.");
-		}
-	}
 }
