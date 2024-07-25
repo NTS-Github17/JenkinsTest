@@ -9,6 +9,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
         scannerHome = tool 'SonarQube Scanner'
+        sonarToken = credentials('sonarqube-token-id')
 //         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
     }
     stages {
@@ -33,7 +34,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv(installationName: 'sonar') {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=SpringBootApplication -Dsonar.sources=src"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=SpringBootApplication -Dsonar.sources=src -Dsonar.host.url=http://10.79.60.7:9000 -Dsonar.login=${sonarToken}"
 //                         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                     }
                     echo 'Checking Quality Gate...'
