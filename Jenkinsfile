@@ -84,16 +84,17 @@ pipeline {
             steps {
                 script {
                     sshagent(['vars3d-ssh-remote']) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no root@10.79.60.28
-                        '
-                        docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \
-                        docker stop ci-cd-test || true && \
-                        docker rm ci-cd-test || true && \
-                        docker run -d --name ci-cd-test -p 8085:8080 $DOCKER_REGISTRY:${BUILD_NUMBER} && \
-                        touch test-remote-server.txt
-                        '
-                        """
+                        sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
+//                         sh """
+//                         ssh -o StrictHostKeyChecking=no root@10.79.60.28
+//                         '
+//                         docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \
+//                         docker stop ci-cd-test || true && \
+//                         docker rm ci-cd-test || true && \
+//                         docker run -d --name ci-cd-test -p 8085:8080 $DOCKER_REGISTRY:${BUILD_NUMBER} && \
+//                         touch test-remote-server.txt
+//                         '
+//                         """
                     }
                 }
             }
