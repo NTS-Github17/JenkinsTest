@@ -90,7 +90,7 @@ pipeline {
                         docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \
                         docker stop ci-cd-test || true && \
                         docker rm ci-cd-test || true && \
-                        docker run -d --name ci-cd-test -p 8085:8080 $DOCKER_REGISTRY:${BUILD_NUMBER}
+                        docker run -d --name ci-cd-test -p 8085:8080 $DOCKER_REGISTRY:${BUILD_NUMBER} && \
                         touch test-remote-server.txt
                         '
                         """
