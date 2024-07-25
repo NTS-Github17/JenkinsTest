@@ -17,10 +17,6 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 	public static void main(String[] args) {
 		logger.info("==================== Application started ====================");
 		SpringApplication.run(Application.class, args);
-//		Scanner sc = new Scanner(System.in);
-//		System.out.println("Enter your name: ");
-//		String name = sc.nextLine();
-//		System.out.println("Welcome to Resdii, " + name);
 	}
 
 	@Override
@@ -40,12 +36,11 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 			file = new FileInputStream("non_existent_file.txt");
 		} catch (FileNotFoundException e) {
 			// Do nothing
+		} finally {
+			if (file != null) {
+				file.close();
+			}
 		}
-//		finally {
-//			if (file != null) {
-//				file.close();
-//			}
-//		}
 	}
 
 	public void testSonarQubeWarning() {
@@ -55,34 +50,34 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 		System.out.println("The sum of a and b is: " + c);
 	}
 
-	public void divisionByZero() {
-		try {
-			int number = 10;
-			int result = number / 0;
-			System.out.println("Result: " + result);
-		} catch (ArithmeticException e) {
-			// Do nothing
-			System.out.println("Error: Division by zero is not allowed.");
-		}
-	}
+//	public void divisionByZero() {
+//		try {
+//			int number = 10;
+//			int result = number / 0;
+//			System.out.println("Result: " + result);
+//		} catch (ArithmeticException e) {
+//			// Do nothing
+//			System.out.println("Error: Division by zero is not allowed.");
+//		}
+//	}
 
-	public void stringToInteger() {
-		try {
-			String str = "abc";
-			int number = Integer.parseInt(str);
-			System.out.println("Converted number: " + number);
-		} catch (NumberFormatException e) {
-			System.out.println("Error: Cannot convert string to integer.");
-		}
-	}
-
-	public void nullPointerDereference() {
-		String str = null;
-		try {
-			System.out.println("Length of the string is: " + str.length());
-		} catch (NullPointerException e) {
-			// Do nothing
-//			System.out.println("Error: Attempted to dereference a null pointer.");
-		}
-	}
+//	public void stringToInteger() {
+//		try {
+//			String str = "abc";
+//			int number = Integer.parseInt(str);
+//			System.out.println("Converted number: " + number);
+//		} catch (NumberFormatException e) {
+//			System.out.println("Error: Cannot convert string to integer.");
+//		}
+//	}
+//
+//	public void nullPointerDereference() {
+//		String str = null;
+//		try {
+//			System.out.println("Length of the string is: " + str.length());
+//		} catch (NullPointerException e) {
+//			// Do nothing
+//			// System.out.println("Error: Attempted to dereference a null pointer.");
+//		}
+//	}
 }
