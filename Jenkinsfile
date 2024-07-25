@@ -28,17 +28,6 @@ pipeline {
             }
         }
 
-//         stage('SonarQube Analysis & Quality Gate') {
-//             steps {
-//                 withSonarQubeEnv(installationName: 'sonar') {
-//                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-//                 }
-// //                 if ("${currentBuild.result}" == "FAILURE") {
-// //                     error("Quality Gate failed")
-// //                 }
-//             }
-//         }
-
         stage('SonarQube Analysis & Quality Gate') {
             steps {
                 script {
