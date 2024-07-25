@@ -85,7 +85,7 @@ pipeline {
                 script {
                     sshagent(['vars3d-ssh-remote']) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no root 10.79.60.28
+                        ssh -o StrictHostKeyChecking=no root@10.79.60.28
                         '
                         docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \
                         docker stop ci-cd-test || true && \
