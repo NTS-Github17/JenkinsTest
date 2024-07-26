@@ -3,11 +3,13 @@ pipeline {
 //     tools {
 //             jdk 'JDK17'
 //     }
-
+    triggers {
+        githubPush()
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
-    
+
     environment {
         DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
