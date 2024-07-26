@@ -71,7 +71,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-//                     withDockerRegistry(credentialsId: 'personal-dockerhub', url: 'https://registry.hub.docker.com/') {
                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                         sh 'docker build -t $DOCKER_REGISTRY:${BUILD_NUMBER} .'
                         sh 'docker push $DOCKER_REGISTRY:${BUILD_NUMBER}'
@@ -84,7 +83,6 @@ pipeline {
             steps {
                 script {
                     sshagent(['vars3d-ssh-remote']) {
-//                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
                         sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
                         docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \\
                         docker stop ci-cd-test || true && \\
