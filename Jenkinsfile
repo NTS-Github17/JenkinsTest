@@ -7,14 +7,12 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
-    
     environment {
         DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
 //         sonarToken = credentials('sonarqube-token-id')
 //         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
     }
-
     stages {
         stage('Checkout SCM') {
             steps {
