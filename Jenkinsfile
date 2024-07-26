@@ -18,7 +18,7 @@ pipeline {
             steps {
                     checkout([
                     $class: 'GitSCM',
-                    branches: [[name: '*/master']],
+                    branches: [[name: '*/main']],
                     userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
                 ])
             }
