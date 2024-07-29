@@ -78,7 +78,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'https://registry.resdii.com/') {
+                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                     sh 'docker build -t $IMAGE_NAME .'
                     sh 'docker push $IMAGE_NAME'
                 }
