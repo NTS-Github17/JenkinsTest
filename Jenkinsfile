@@ -11,10 +11,10 @@ pipeline {
     }
 
     environment {
-        DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
-        DOCKER_HOST = "tcp://10.79.60.28:2375"
+        // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
+        // DOCKER_HOST = "tcp://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
-        CONTAINER_NAME = "ci-cd-test"
+        // CONTAINER_NAME = "ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
 //         sonarToken = credentials('sonarqube-token-id')
 //         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
