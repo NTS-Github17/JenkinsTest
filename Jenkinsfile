@@ -11,7 +11,7 @@ pipeline {
     }
 
     environment {
-        // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
+        DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
         DOCKER_HOST = "tcp://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         // CONTAINER_NAME = "ci-cd-test"
@@ -90,26 +90,26 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // script {
-                //     def dockerPull = """
-                //         curl -X POST -H "Content-Type: application/json" \
-                //         --data '{"fromImage": "${IMAGE_NAME}"}' \
-                //         ${DOCKER_HOST}/images/create
-                //     """
-                //     sh(dockerPull)
-                // }
                 script {
-                    sshagent(['vars3d-ssh-remote']) {
-//                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
-                        sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
-                        docker pull $IMAGE_NAME && \\
-                        docker stop ci-cd-test || true && \\
-                        docker rm ci-cd-test || true && \\
-                        docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME && \\
-                        touch test-remote-server.txt '
-                        """
-                    }
+                    def dockerPull = """
+                        curl -X POST -H "Content-Type: application/json" \
+                        --data '{"fromImage": "${IMAGE_NAME}"}' \
+                        ${DOCKER_HOST}/images/create
+                    """
+                    sh(dockerPull)
                 }
+//                 script {
+//                     sshagent(['vars3d-ssh-remote']) {
+// //                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
+//                         sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
+//                         docker pull $IMAGE_NAME && \\
+//                         docker stop ci-cd-test || true && \\
+//                         docker rm ci-cd-test || true && \\
+//                         docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME && \\
+//                         touch test-remote-server.txt '
+//                         """
+//                     }
+//                 }
             }
         }
     }
