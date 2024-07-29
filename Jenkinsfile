@@ -11,7 +11,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
+        // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
         DOCKER_HOST = "tcp://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         // CONTAINER_NAME = "ci-cd-test"
@@ -79,7 +79,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    withDockerRegistry([credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/']) {
+                    // Login Docker registry
+                    sh 'echo "123456a@" | docker login -u phuhk --password-stdin http://10.79.60.7:8010/'
+
+                    withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                         sh 'docker build -t $IMAGE_NAME .'
                         sh 'docker push $IMAGE_NAME'
                     }
