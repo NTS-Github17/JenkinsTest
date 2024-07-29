@@ -83,7 +83,7 @@ pipeline {
                         sh 'docker build -t $IMAGE_NAME .'
                         sh 'docker push $IMAGE_NAME'
                     }
-                    sh 'docker rmi $IMAGE_NAME'
+                    // sh 'docker rmi $IMAGE_NAME'
                 }
             }
         }
