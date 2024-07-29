@@ -80,7 +80,7 @@ pipeline {
             steps {
                 script {
                     // Login Docker registry
-                    sh 'echo "123456a@" | docker login -u phuhk --password-stdin http://10.79.60.7:8010/'
+                    sh 'echo "123456a@" | docker login -u phuhk -p 123456a@  http://10.79.60.7:8010/'
 
                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                         sh 'docker build -t $IMAGE_NAME .'
