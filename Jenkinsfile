@@ -82,8 +82,8 @@ pipeline {
                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                         sh 'docker build -t $IMAGE_NAME .'
                         sh 'docker push $IMAGE_NAME'
-                        sh 'docker rmi $IMAGE_NAME'
                     }
+                    // sh 'docker rmi $IMAGE_NAME'
                 }
             }
         }
