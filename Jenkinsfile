@@ -12,7 +12,7 @@ pipeline {
 
     environment {
         // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
-        DOCKER_HOST = "tcp://10.79.60.28:2375"
+        // DOCKER_HOST = "tcp://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         // CONTAINER_NAME = "ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
@@ -81,7 +81,7 @@ pipeline {
                 sh 'docker build -t $IMAGE_NAME .'
 
                 echo 'Build Successfully!!!'
-                
+
                 withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                     // sh 'docker build -t $IMAGE_NAME .'
                     sh 'docker push $IMAGE_NAME'
