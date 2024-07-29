@@ -12,6 +12,9 @@ pipeline {
 
     environment {
         DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
+        DOCKER_HOST = "tcp://10.79.60.28:2375"
+        IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
+        CONTAINER_NAME = "ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
 //         sonarToken = credentials('sonarqube-token-id')
 //         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
@@ -77,8 +80,8 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-                        sh 'docker build -t $DOCKER_REGISTRY:${BUILD_NUMBER} .'
-                        sh 'docker push $DOCKER_REGISTRY:${BUILD_NUMBER}'
+                        sh 'docker build -t $IMAGE_NAME .'
+                        sh 'docker push $IMAGE_NAME'
                     }
                 }
             }
@@ -90,10 +93,10 @@ pipeline {
                     sshagent(['vars3d-ssh-remote']) {
 //                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
                         sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
-                        docker pull $DOCKER_REGISTRY:${BUILD_NUMBER} && \\
+                        docker pull $IMAGE_NAME && \\
                         docker stop ci-cd-test || true && \\
                         docker rm ci-cd-test || true && \\
-                        docker run -d --name ci-cd-test -p 8085:8080 $DOCKER_REGISTRY:${BUILD_NUMBER} && \\
+                        docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME && \\
                         touch test-remote-server.txt '
                         """
                     }
