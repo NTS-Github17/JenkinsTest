@@ -12,8 +12,8 @@ pipeline {
 
     environment {
         // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
-        REMOTE_DOCKER_HOST = "tcp://10.79.60.28:2375"
-        // REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
+        // REMOTE_DOCKER_HOST = "tcp://10.79.60.28:2375"
+        REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         // CONTAINER_NAME = "ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
@@ -91,9 +91,7 @@ pipeline {
             steps {
                 script {
                     def dockerPull = """
-                        curl -X POST -H "Content-Type: application/json" \
-                        --data '{"fromImage": "${IMAGE_NAME}"}' \
-                        ${REMOTE_DOCKER_HOST}/images/create
+                        curl -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
                     """
                     sh(dockerPull)
                 }
