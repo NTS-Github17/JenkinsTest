@@ -103,7 +103,7 @@ pipeline {
 
                             def authConfig = """{
                                 "username": "${REGISTRY_CREDENTIALS_USR}",
-                                "password": "${REGISTRY_CREDENTIALS_PSWv}",
+                                "password": "${REGISTRY_CREDENTIALS_PSW}",
                                 "serveraddress": "10.79.60.7:8010"
                             }"""
                             def authBase64 = sh(script: "echo '${authConfig}' | base64", returnStdout: true).trim()
@@ -114,7 +114,8 @@ pipeline {
                                 curl --unix-socket /var/run/docker.sock \
                                 -H "Content-Type: application/tar" \
                                 -H "X-Registry-Auth: ${authBase64}" \
-                                -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                                -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
+                                --data-binary "@-"
                             """
 
                             sh(dockerPull)
