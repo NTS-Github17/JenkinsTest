@@ -107,7 +107,7 @@ pipeline {
                     """
 
                     // Mã hóa JSON config thành base64
-                    def authBase64 = Base64.encodeBase64String(authConfig.getBytes())
+                    def authBase64 = authConfig.bytes.encodeBase64().toString()
 
                     def dockerPull = """
                         curl --unix-socket /var/run/docker.sock \
