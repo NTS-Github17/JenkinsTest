@@ -2,7 +2,6 @@ pipeline {
     agent any
     tools {
         maven 'maven'
-            // jdk 'JDK17'
     }
     triggers {
         githubPush()
@@ -80,7 +79,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/', toolName: 'docker') {
+                withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
                     sh 'docker build -t $IMAGE_NAME .'
                     sh 'docker push $IMAGE_NAME'
                 }
