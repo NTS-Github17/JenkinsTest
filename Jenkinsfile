@@ -106,6 +106,9 @@ pipeline {
                     }
                     """
 
+                    // Mã hóa JSON config thành base64
+                    def authBase64 = Base64.encodeBase64String(authConfig.getBytes())
+
                     def dockerPull = """
                         curl --unix-socket /var/run/docker.sock \
                         -H "Content-Type: application/json" \
@@ -114,6 +117,7 @@ pipeline {
                     """
 
                     sh(dockerPull)
+
                     // def dockerPull = """
                     //     curl --unix-socket /var/run/docker.sock \
                     //     -H "Content-Type: application/json" \
