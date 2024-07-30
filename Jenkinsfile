@@ -96,12 +96,13 @@ pipeline {
 
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
                         script {
-                                def JSON = $(echo '{"username": "phuhk", "password": "123456a@", "serveraddress": "http://10.79.60.7:8010"}' | base64)
+                                JSON = $(echo '{"username": "phuhk", "password": "123456a@", "serveraddress": "http://10.79.60.7:8010"}' | base64)
                                 def dockerPull = """
                                     curl --unix-socket /var/run/docker.sock \
                                     -H "Content-Type: application/json" \
-                                    -H "X-Registry-Auth: $JSON" \
-                                    -X POST "http://10.79.60.28:2375/images/create?fromImage=10.79.60.7:8010/ci-cd-test:58"
+                                    -X POST "http://10.79.60.28:2375/images/create?fromImage=10.79.60.7:8010/ci-cd-test:58" \
+                                    -H "X-Registry-Auth"
+                                    -d "$JSON"
                                 """
                                 sh(dockerPull)
                             // Sử dụng username và password từ Jenkins credentials
