@@ -96,29 +96,36 @@ pipeline {
 
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
                         script {
+                                def JSON = $(echo '{"username": "phuhk", "password": "123456a@", "serveraddress": "http://10.79.60.7:8010"}' | base64)
+                                def dockerPull = """
+                                    curl --unix-socket /var/run/docker.sock \
+                                    -H "Content-Type: application/json" \
+                                    -H "X-Registry-Auth: $JSON" \
+                                    -X POST "http://10.79.60.28:2375/images/create?fromImage=10.79.60.7:8010/ci-cd-test:58"
+                                """
+                                sh(dockerPull)
                             // Sử dụng username và password từ Jenkins credentials
 //                             def authConfig = "{\"username\": \"${REGISTRY_CREDENTIALS_USR}\", \"password\": \"${REGISTRY_CREDENTIALS_PSW}\", \"email\": \"nguyentiensy2k17@gmail.com\", \"serveraddress\": \"10.79.60.7:8010\"}"
                             // Mã hóa JSON config thành base64
 //                             def authBase64 = sh(script: "echo -n ${authConfig} | base64", returnStdout: true).trim()
 
-                            def authConfig = """{
-                                "username": "${REGISTRY_CREDENTIALS_USR}",
-                                "password": "${REGISTRY_CREDENTIALS_PSW}",
-                                "serveraddress": "10.79.60.7:8010"
-                            }"""
-                            def authBase64 = sh(script: "echo '${authConfig}' | base64", returnStdout: true).trim()
 
-                            echo "Base64 Encoded Auth Config: ${authBase64}"  // In ra base64 để kiểm tra
-
-                            def dockerPull = """
-                                curl --unix-socket /var/run/docker.sock \
-                                -H "Content-Type: application/tar" \
-                                -H "X-Registry-Auth: ${authBase64}" \
-                                -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
-                                --data-binary "@-"
-                            """
-
-                            sh(dockerPull)
+//                             def authConfig = """{
+//                                 "username": "${REGISTRY_CREDENTIALS_USR}",
+//                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
+//                                 "serveraddress": "10.79.60.7:8010"
+//                             }"""
+//                             def authBase64 = sh(script: "echo '${authConfig}' | base64", returnStdout: true).trim()
+//
+//                             echo "Base64 Encoded Auth Config: ${authBase64}"  // In ra base64 để kiểm tra
+//
+//                             def dockerPull = """
+//                                 curl --unix-socket /var/run/docker.sock \
+//                                 -H "Content-Type: application/tar" \
+//                                 -H "X-Registry-Auth: ${authBase64}" \
+//                                 -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
+//                                 --data-binary "@-"
+//                             """
                         }
                     }
 
