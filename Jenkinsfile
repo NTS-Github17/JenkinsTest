@@ -90,14 +90,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // def dockerPull = """
-                    //     curl --unix-socket /var/run/docker.sock \
-                    //     -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
-                    // """
                     def dockerPull = """
                         curl --unix-socket /var/run/docker.sock \
-                        -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                        -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
                     """
+                    // def dockerPull = """
+                    //     curl --unix-socket /var/run/docker.sock \
+                    //     -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                    // """
                     sh(dockerPull)
                 }
 //                 script {
