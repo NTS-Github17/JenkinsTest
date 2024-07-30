@@ -91,21 +91,29 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDS_USR', passwordVariable: 'REGISTRY_CREDS_PSW')]) {
-                        echo "Username: $REGISTRY_CREDS_USR"
-                        echo "Password: $REGISTRY_CREDS_PSW"
+//                     def authConfig = '{\"username\": \"${REGISTRY_CREDS_USR}\", \"password\": \"${REGISTRY_CREDS_PSW}\", \"email\": \"nguyentiensy2k17@gmail.com\", \"serveraddress\": \"10.79.60.7:8010\"}'
+//                     def authBase64 = authConfig.bytes.encodeBase64().toString()
 
-                        def authConfig = '{\"username\": \"${REGISTRY_CREDS_USR}\", \"password\": \"${REGISTRY_CREDS_PSW}\", \"email\": \"nguyentiensy2k17@gmail.com\", \"serveraddress\": \"10.79.60.7:8010\"}'
-                        def authBase64 = authConfig.bytes.encodeBase64().toString()
-                        def dockerPull = """
-                            curl --unix-socket /var/run/docker.sock \
-                            -H "Content-Type: application/json" \
-                            -H "X-Registry-Auth: ${authBase64}" \
-                            -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
-                        """
-                        
-                        sh(dockerPull)
+                    // Sử dụng username và password từ Jenkins credentials
+                    def username = env.REGISTRY_CREDS_USR
+                    def password = env.REGISTRY_CREDS_PSW
+                    def authConfig = """
+                    {
+                        "username": "${username}",
+                        "password": "${password}",
+                        "email": "nguyentiensy2k17@gmail.com",
+                        "serveraddress": "10.79.60.7:8010"
                     }
+                    """
+
+                    def dockerPull = """
+                        curl --unix-socket /var/run/docker.sock \
+                        -H "Content-Type: application/json" \
+                        -H "X-Registry-Auth: ${authBase64}" \
+                        -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                    """
+
+                    sh(dockerPull)
                     // def dockerPull = """
                     //     curl --unix-socket /var/run/docker.sock \
                     //     -H "Content-Type: application/json" \
