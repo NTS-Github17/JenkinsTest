@@ -94,30 +94,34 @@ pipeline {
 //                     def authConfig = '{\"username\": \"${REGISTRY_CREDS_USR}\", \"password\": \"${REGISTRY_CREDS_PSW}\", \"email\": \"nguyentiensy2k17@gmail.com\", \"serveraddress\": \"10.79.60.7:8010\"}'
 //                     def authBase64 = authConfig.bytes.encodeBase64().toString()
 
-                    // Sử dụng username và password từ Jenkins credentials
-                    def username = env.REGISTRY_CREDS_USR
-                    def password = env.REGISTRY_CREDS_PSW
-                    def authConfig = """
-                    {
-                        "username": "${username}",
-                        "password": "${password}",
-                        "email": "nguyentiensy2k17@gmail.com",
-                        "serveraddress": "10.79.60.7:8010"
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
+                        // Sử dụng username và password từ Jenkins credentials
+                        def authConfig = "{\"username\": \"${REGISTRY_CREDENTIALS_USR}\", \"password\": \"${REGISTRY_CREDENTIALS_PSW}\", \"email\": \"nguyentiensy2k17@gmail.com\", \"serveraddress\": \"10.79.60.7:8010\"}"
+//                                             def username = env.REGISTRY_CREDS_USR
+//                                             def password = env.REGISTRY_CREDS_PSW
+//                                             def authConfig = """
+//                                             {
+//                                                 "username": "${username}",
+//                                                 "password": "${password}",
+//                                                 "email": "nguyentiensy2k17@gmail.com",
+//                                                 "serveraddress": "10.79.60.7:8010"
+//                                             }
+//                                             """
+
+                        // Mã hóa JSON config thành base64
+                        // def authBase64 = authConfig.bytes.encodeBase64().toString()
+                        def authBase64 = sh(script: "echo -n ${authConfig} | base64", returnStdout: true).trim()
+
+                        def dockerPull = """
+                            curl --unix-socket /var/run/docker.sock \
+                            -H "Content-Type: application/json" \
+                            -H "X-Registry-Auth: ${authBase64}" \
+                            -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                        """
+
+                        sh(dockerPull)
                     }
-                    """
 
-                    // Mã hóa JSON config thành base64
-//                     def authBase64 = authConfig.bytes.encodeBase64().toString()
-                    def authBase64 = sh(script: "echo -n ${authConfig} | base64", returnStdout: true).trim()
-
-                    def dockerPull = """
-                        curl --unix-socket /var/run/docker.sock \
-                        -H "Content-Type: application/json" \
-                        -H "X-Registry-Auth: ${authBase64}" \
-                        -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
-                    """
-
-                    sh(dockerPull)
 
                     // def dockerPull = """
                     //     curl --unix-socket /var/run/docker.sock \
