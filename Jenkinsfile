@@ -96,15 +96,6 @@ pipeline {
 
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
                         script {
-                                // JSON = $(echo '{"username": "phuhk", "password": "123456a@", "serveraddress": "http://10.79.60.7:8010"}' | base64)
-                                // def dockerPull = """
-                                //     curl --unix-socket /var/run/docker.sock \
-                                //     -H "Content-Type: application/json" \
-                                //     -X POST "http://10.79.60.28:2375/images/create?fromImage=10.79.60.7:8010/ci-cd-test:58" \
-                                //     -H "X-Registry-Auth"
-                                //     -d "$JSON"
-                                // """
-                                // sh(dockerPull)
                             // Sử dụng username và password từ Jenkins credentials
 //                             def authConfig = "{\"username\": \"${REGISTRY_CREDENTIALS_USR}\", \"password\": \"${REGISTRY_CREDENTIALS_PSW}\", \"email\": \"nguyentiensy2k17@gmail.com\", \"serveraddress\": \"10.79.60.7:8010\"}"
                             // Mã hóa JSON config thành base64
