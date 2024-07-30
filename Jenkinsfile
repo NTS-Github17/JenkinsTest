@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         maven 'maven'
+        docker 'docker'
             // jdk 'JDK17'
     }
     triggers {
