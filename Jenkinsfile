@@ -15,6 +15,7 @@ pipeline {
         // REMOTE_DOCKER_HOST = "tcp://10.79.60.28:2375"
         REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
+        REGISTRY_CREDS = credentials('dockerhub-resdii')
         // CONTAINER_NAME = "ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
 //         sonarToken = credentials('sonarqube-token-id')
@@ -90,7 +91,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def authConfig = '{"username": "phuhk", "password": "123456a@", "email": "nguyentiensy2k17@gmail.com", "serveraddress": "10.79.60.7:8010"}'
+                    def authConfig = '{\"username\": \"${REGISTRY_CREDS_USR}\", \"password\": \"${REGISTRY_CREDS_PSW}\", "email": "nguyentiensy2k17@gmail.com", "serveraddress": "10.79.60.7:8010"}'
                     def authBase64 = authConfig.bytes.encodeBase64().toString()
                     def dockerPull = """
                         curl --unix-socket /var/run/docker.sock \
