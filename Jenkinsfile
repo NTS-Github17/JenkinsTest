@@ -12,7 +12,7 @@ pipeline {
 
     environment {
         // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
-        REMOTE_DOCKER_HOST = "tcp://10.79.60.28:2375"
+        REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         // CONTAINER_NAME = "ci-cd-test"
 //         scannerHome = tool 'SonarQube Scanner'
