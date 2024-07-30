@@ -90,15 +90,17 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def dockerPull = """
+                    withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
+                        def dockerPull = """
                         curl --unix-socket /var/run/docker.sock \
                         -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
-                    """
-                    // def dockerPull = """
-                    //     curl --unix-socket /var/run/docker.sock \
-                    //     -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
-                    // """
-                    sh(dockerPull)
+                        """
+                        // def dockerPull = """
+                        //     curl --unix-socket /var/run/docker.sock \
+                        //     -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                        // """
+                        sh(dockerPull)
+                    }
                 }
 //                 script {
 //                     sshagent(['vars3d-ssh-remote']) {
