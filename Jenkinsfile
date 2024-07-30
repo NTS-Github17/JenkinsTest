@@ -117,7 +117,7 @@ pipeline {
                                 "serveraddress": "http://10.79.60.7:8010"
                             }"""
 
-                            def authBase64 = sh(script: "echo '${authConfig}' | base64", returnStdout: true).trim()
+                            def authBase64 = sh(script: "echo '${authConfig}' | base64 | tr -d '\n'", returnStdout: true).trim()
 
                             echo "Base64 Encoded Auth Config: ${authBase64}"  // In ra base64 để kiểm tra
 
