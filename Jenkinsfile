@@ -91,14 +91,15 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-                        def dockerPull = """
-                        curl --unix-socket /var/run/docker.sock \
-                        -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
-                        """
                         // def dockerPull = """
-                        //     curl --unix-socket /var/run/docker.sock \
-                        //     -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                        // curl --unix-socket /var/run/docker.sock \
+                        // -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
                         // """
+                        def dockerPull = """
+                            curl --unix-socket /var/run/docker.sock \
+                            -H "Content-Type: application/json" \
+                            -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+                        """
                         sh(dockerPull)
                     }
                 }
