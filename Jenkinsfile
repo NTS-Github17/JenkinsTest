@@ -123,9 +123,9 @@ pipeline {
 
                             def dockerPull = """
                                 curl --unix-socket /var/run/docker.sock \
-                                -H "Content-Type: application/tar" 
-                                -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" 
-                                -H "X-Registry-Auth" 
+                                -H "Content-Type: application/tar" \
+                                -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
+                                -H "X-Registry-Auth" \
                                 -d "${authBase64}"
                             """
                             sh(dockerPull)
