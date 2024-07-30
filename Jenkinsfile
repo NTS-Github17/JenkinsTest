@@ -114,7 +114,7 @@ pipeline {
                             def authConfig = """{
                                 "username": "${REGISTRY_CREDENTIALS_USR}",
                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
-                                "serveraddress": "10.79.60.7:8010"
+                                "serveraddress": "http://10.79.60.7:8010"
                             }"""
 
                             def authBase64 = sh(script: "echo '${authConfig}' | base64", returnStdout: true).trim()
