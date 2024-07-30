@@ -101,13 +101,14 @@ pipeline {
                             // Mã hóa JSON config thành base64
 //                             def authBase64 = sh(script: "echo -n ${authConfig} | base64", returnStdout: true).trim()
 
-                            def authConfig = "{\"username\": \"${REGISTRY_USER}\", \"password\": \"${REGISTRY_PASS}\", \"serveraddress\": \"10.79.60.7:8010\"}"
+                            def authConfig = "{\"username\": \"${REGISTRY_CREDENTIALS_USR}\", \"password\": \"${REGISTRY_CREDENTIALS_PSW}\", \"serveraddress\": \"10.79.60.7:8010\"}"
                             def authBase64 = sh(script: "echo '${authConfig}' | base64", returnStdout: true).trim()
-                            
+
                             echo "Base64 Encoded Auth Config: ${authBase64}"  // In ra base64 để kiểm tra
 
                             def dockerPull = """
                                 curl --unix-socket /var/run/docker.sock \
+                                -H "Content-Type: application/json" \
                                 -H "X-Registry-Auth: ${authBase64}" \
                                 -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
                             """
