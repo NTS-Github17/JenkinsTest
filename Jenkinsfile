@@ -94,7 +94,7 @@ pipeline {
                         --data '{"fromImage": "${IMAGE_NAME}"}' \
                         ${REMOTE_DOCKER_HOST}/images/create
                     """
-                    sh(dockerPull)
+                    sh dockerPull
                 }
 //                 script {
 //                     sshagent(['vars3d-ssh-remote']) {
