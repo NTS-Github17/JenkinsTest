@@ -91,7 +91,8 @@ pipeline {
             steps {
                 script {
                     def dockerPull = """
-                        curl -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
+                        curl --unix-socket /var/run/docker.sock \
+                        -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
                     """
                     sh(dockerPull)
                 }
