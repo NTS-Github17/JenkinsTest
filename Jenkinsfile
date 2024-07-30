@@ -1,8 +1,9 @@
 pipeline {
     agent any
-//     tools {
-//             jdk 'JDK17'
-//     }
+    tools {
+        maven 'maven'
+            // jdk 'JDK17'
+    }
     triggers {
         githubPush()
     }
