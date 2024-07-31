@@ -159,6 +159,7 @@ pipeline {
                             """
                             sh(createContainer)
 
+
                             // Start container
                             def startContainer = """
                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/start" \
