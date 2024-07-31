@@ -99,7 +99,7 @@ pipeline {
                                 docker pull $IMAGE_NAME && \\
                                 docker stop ci-cd-test || true && \\
                                 docker rm ci-cd-test || true && \\
-                                docker rmi ${OLD_IMAGE_NAME} && \\
+                                docker rmi $OLD_IMAGE_NAME && \\
                                 docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
                                 """
                             }
