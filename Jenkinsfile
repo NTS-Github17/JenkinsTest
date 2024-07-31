@@ -17,6 +17,7 @@ pipeline {
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         REGISTRY_CREDS = credentials('dockerhub-resdii')
         CONTAINER_NAME = "ci-cd-test"
+        OLD_BUILD_NUMBER = "${BUILD_NUMBER.toInteger() - 1}"
 //         scannerHome = tool 'SonarQube Scanner'
 //         sonarToken = credentials('sonarqube-token-id')
 //         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
@@ -94,11 +95,11 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
                         script {
                             sshagent(['vars3d-ssh-remote']) {
-//                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
                                 sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
                                 docker pull $IMAGE_NAME && \\
                                 docker stop ci-cd-test || true && \\
                                 docker rm ci-cd-test || true && \\
+                                docker rmi '10.79.60.7:8010/ci-cd-test:${OLD_BUILD_NUMBER}'
                                 docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
                                 """
                             }
