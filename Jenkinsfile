@@ -157,10 +157,17 @@ pipeline {
                                     }
                                 }'
                             """
-//                             sh(createContainer)
+                            sh(createContainer)
 
-                            def createResponse = sh(script: createContainer, returnStdout: true).trim()
-                            echo "Create Container Response: ${createResponse}"
+                            // Check container status
+                            def containerStatusCommand = """
+                                curl -s "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/json" \
+                                -H "Content-Type: application/json" \
+                                -H "X-Registry-Auth: ${authBase64}"
+                            """
+
+                            def statusResponse = sh(script: containerStatusCommand, returnStdout: true).trim()
+                            echo "Container Status Response: ${statusResponse}"
 
                             // Start container
                             def startContainer = """
