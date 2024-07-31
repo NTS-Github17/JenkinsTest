@@ -93,103 +93,114 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
                         script {
+                            sshagent(['vars3d-ssh-remote']) {
+//                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
+                                sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
+                                docker pull $IMAGE_NAME && \\
+                                docker stop ci-cd-test || true && \\
+                                docker rm ci-cd-test || true && \\
+                                docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
+                                """
+                            }
+
+
                             def authConfig = """{
-                                "username": "${REGISTRY_CREDENTIALS_USR}",
-                                "password": "${REGISTRY_CREDENTIALS_PSW}",
-                                "serveraddress": "http://10.79.60.7:8010"
-                            }"""
+//                                 "username": "${REGISTRY_CREDENTIALS_USR}",
+//                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
+//                                 "serveraddress": "http://10.79.60.7:8010"
+//                             }"""
 
                             def authBase64 = sh(script: "echo '${authConfig}' | base64 | tr -d '\n'", returnStdout: true).trim()
 
-                            echo "Base64 Encoded Auth Config: ${authBase64}"  // In ra base64 để kiểm tra
+                            echo "Base64 Encoded Auth Config: ${authBase64}"
 
-                            // Stop old container if exists
-                            def stopContainer = """
-                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/stop" \
-                                -H "Content-Type: application/json" || true
+                            // Check container status
+                            def containerStatusCommand = """
+                                curl -s "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/json" \
+                                -H "Content-Type: application/json" \
+                                -H "X-Registry-Auth: ${authBase64}"
                             """
-                            sh(stopContainer)
-//
-                            // Remove old container if exists
-                            def removeContainer = """
-                                curl -s -X DELETE "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}" \
-                                -H "Content-Type: application/json" || true
-                            """
-                            sh(removeContainer)
-//
-//                             // Remove old image
-//                             def removeOldImage = """
-//                                 curl -s -X DELETE "${REMOTE_DOCKER_HOST}/images/${IMAGE_NAME}" \
+
+                            def statusResponse = sh(script: containerStatusCommand, returnStdout: true).trim()
+                            echo "Container Status Response: ${statusResponse}"
+                        }
+//                         script {
+//                             def authConfig = """{
+//                                 "username": "${REGISTRY_CREDENTIALS_USR}",
+//                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
+//                                 "serveraddress": "http://10.79.60.7:8010"
+//                             }"""
+
+//                             def authBase64 = sh(script: "echo '${authConfig}' | base64 | tr -d '\n'", returnStdout: true).trim()
+
+//                             echo "Base64 Encoded Auth Config: ${authBase64}"
+
+//                             // Stop old container if exists
+//                             def stopContainer = """
+//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/stop" \
 //                                 -H "Content-Type: application/json" || true
 //                             """
-//                             sh(removeOldImage)
+//                             sh(stopContainer)
+// //
+//                             // Remove old container if exists
+//                             def removeContainer = """
+//                                 curl -s -X DELETE "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}" \
+//                                 -H "Content-Type: application/json" || true
+//                             """
+//                             sh(removeContainer)
+// //
+// //                             // Remove old image
+// //                             def removeOldImage = """
+// //                                 curl -s -X DELETE "${REMOTE_DOCKER_HOST}/images/${IMAGE_NAME}" \
+// //                                 -H "Content-Type: application/json" || true
+// //                             """
+// //                             sh(removeOldImage)
 
-                            // Pull new image
-                            def dockerPull = """
-                                curl -s -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
-                                -H "Content-Type: application/json" \
-                                -H "X-Registry-Auth: ${authBase64}"
-                            """
-                            // curl --unix-socket /var/run/docker.sock \
-                                // -H "Content-Type: application/tar" \
-                                // -H "X-Registry-Auth: ${authBase64}" \
-                                // -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
+//                             // Pull new image
+//                             def dockerPull = """
+//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
+//                                 -H "Content-Type: application/json" \
+//                                 -H "X-Registry-Auth: ${authBase64}"
+//                             """
+//                             // curl --unix-socket /var/run/docker.sock \
+//                                 // -H "Content-Type: application/tar" \
+//                                 // -H "X-Registry-Auth: ${authBase64}" \
+//                                 // -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
                                 
-                            sh(dockerPull)
+//                             sh(dockerPull)
 
-//                             "name": "${CONTAINER_NAME}",
-                            // Create container
-                            def createContainer = """
-                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create?name=${CONTAINER_NAME}" \
-                                -H "Content-Type: application/json" \
-                                -H "X-Registry-Auth: ${authBase64}" \
-                                -d '{
-                                    "Image": "${IMAGE_NAME}",
-                                    "ExposedPorts": {"8080/tcp": {}},
-                                    "HostConfig": {
-                                        "PortBindings": {
-                                            "8080/tcp": [
-                                                {
-                                                    "HostPort": "8085"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                }'
-                            """
-                            sh(createContainer)
+//                             // Create container
+//                             def createContainer = """
+//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create?name=${CONTAINER_NAME}" \
+//                                 -H "Content-Type: application/json" \
+//                                 -H "X-Registry-Auth: ${authBase64}" \
+//                                 -d '{
+//                                     "Image": "${IMAGE_NAME}",
+//                                     "ExposedPorts": {"8080/tcp": {}},
+//                                     "HostConfig": {
+//                                         "PortBindings": {
+//                                             "8080/tcp": [
+//                                                 {
+//                                                     "HostPort": "8085"
+//                                                 }
+//                                             ]
+//                                         }
+//                                     }
+//                                 }'
+//                             """
+//                             sh(createContainer)
 
 
-                            // Start container
-                            def startContainer = """
-                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/start" \
-                                -H "Content-Type: application/json" \
-                                -H "X-Registry-Auth: ${authBase64}"
-                            """
-                            sh(startContainer)
-                        }
+//                             // Start container
+//                             def startContainer = """
+//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/start" \
+//                                 -H "Content-Type: application/json" \
+//                                 -H "X-Registry-Auth: ${authBase64}"
+//                             """
+//                             sh(startContainer)
+//                         }
                     }
-
-
-                    // def dockerPull = """
-                    //     curl --unix-socket /var/run/docker.sock \
-                    //     -H "Content-Type: application/json" \
-                    //     -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
-                    // """
-                    // sh(dockerPull)
                 }
-//                 script {
-//                     sshagent(['vars3d-ssh-remote']) {
-// //                         sh 'ssh -o StrictHostKeyChecking=no root@10.79.60.28 touch test-remote-server.txt'
-//                         sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
-//                         docker pull $IMAGE_NAME && \\
-//                         docker stop ci-cd-test || true && \\
-//                         docker rm ci-cd-test || true && \\
-//                         docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME && \\
-//                         touch test-remote-server.txt '
-//                         """
-//                     }
-//                 }
             }
         }
     }
