@@ -15,9 +15,9 @@ pipeline {
         // REMOTE_DOCKER_HOST = "tcp://10.79.60.28:2375"
         REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
+        OLD_IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER.toInteger() - 1}"
         REGISTRY_CREDS = credentials('dockerhub-resdii')
         CONTAINER_NAME = "ci-cd-test"
-        OLD_BUILD_NUMBER = "${BUILD_NUMBER.toInteger() - 1}"
 //         scannerHome = tool 'SonarQube Scanner'
 //         sonarToken = credentials('sonarqube-token-id')
 //         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
@@ -99,7 +99,7 @@ pipeline {
                                 docker pull $IMAGE_NAME && \\
                                 docker stop ci-cd-test || true && \\
                                 docker rm ci-cd-test || true && \\
-                                docker rmi '10.79.60.7:8010/ci-cd-test:${OLD_BUILD_NUMBER}'
+                                docker rmi ${OLD_IMAGE_NAME} \\
                                 docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
                                 """
                             }
