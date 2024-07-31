@@ -114,6 +114,36 @@ pipeline {
                                 // -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
                                 
                             sh(dockerPull)
+
+                            // Create container
+                            def createContainer = """
+                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create" \
+                                -H "Content-Type: application/json" \
+                                -H "X-Registry-Auth: ${authBase64}" \
+                                -d '{
+                                    "Image": "${IMAGE_NAME}",
+                                    "name": "${CONTAINER_NAME}",
+                                    "ExposedPorts": {"8080/tcp": {}},
+                                    "HostConfig": {
+                                        "PortBindings": {
+                                            "8080/tcp": [
+                                                {
+                                                    "HostPort": "8085"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }'
+                            """
+                            sh(createContainer)
+
+                            // Start container
+                            def startContainer = """
+                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/start" \
+                                -H "Content-Type: application/json" \
+                                -H "X-Registry-Auth: ${authBase64}"
+                            """
+                            sh(startContainer)
                         }
                     }
 
@@ -124,10 +154,6 @@ pipeline {
                     //     -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
                     // """
                     // sh(dockerPull)
-                        // def dockerPull = """
-                        // curl --unix-socket /var/run/docker.sock \
-                        // -X POST -H "Content-Type: application/json" --data '{"fromImage": "${IMAGE_NAME}"}' ${REMOTE_DOCKER_HOST}/images/create
-                        // """
                 }
 //                 script {
 //                     sshagent(['vars3d-ssh-remote']) {
