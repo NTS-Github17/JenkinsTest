@@ -157,7 +157,10 @@ pipeline {
                                     }
                                 }'
                             """
-                            sh(createContainer)
+//                             sh(createContainer)
+
+                            def createResponse = sh(script: createContainer, returnStdout: true).trim()
+                            echo "Create Container Response: ${createResponse}"
 
                             // Start container
                             def startContainer = """
