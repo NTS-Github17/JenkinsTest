@@ -145,6 +145,7 @@ pipeline {
                                 -H "X-Registry-Auth: ${authBase64}" \
                                 -d '{
                                     "Image": "${IMAGE_NAME}",
+                                    "name": "${CONTAINER_NAME}",
                                     "ExposedPorts": {"8080/tcp": {}},
                                     "HostConfig": {
                                         "PortBindings": {
