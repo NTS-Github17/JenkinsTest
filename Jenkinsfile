@@ -103,19 +103,19 @@ pipeline {
 
                             echo "Base64 Encoded Auth Config: ${authBase64}"  // In ra base64 để kiểm tra
 
-//                             // Stop old container if exists
-//                             def stopContainer = """
-//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/stop" \
-//                                 -H "Content-Type: application/json" || true
-//                             """
-//                             sh(stopContainer)
+                            // Stop old container if exists
+                            def stopContainer = """
+                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/stop" \
+                                -H "Content-Type: application/json" || true
+                            """
+                            sh(stopContainer)
 //
-//                             // Remove old container if exists
-//                             def removeContainer = """
-//                                 curl -s -X DELETE "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}" \
-//                                 -H "Content-Type: application/json" || true
-//                             """
-//                             sh(removeContainer)
+                            // Remove old container if exists
+                            def removeContainer = """
+                                curl -s -X DELETE "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}" \
+                                -H "Content-Type: application/json" || true
+                            """
+                            sh(removeContainer)
 //
 //                             // Remove old image
 //                             def removeOldImage = """
