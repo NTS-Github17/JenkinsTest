@@ -137,6 +137,7 @@ pipeline {
                                 
                             sh(dockerPull)
 
+//                             "name": "${CONTAINER_NAME}",
                             // Create container
                             def createContainer = """
                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create" \
@@ -144,7 +145,6 @@ pipeline {
                                 -H "X-Registry-Auth: ${authBase64}" \
                                 -d '{
                                     "Image": "${IMAGE_NAME}",
-                                    "name": "${CONTAINER_NAME}",
                                     "ExposedPorts": {"8080/tcp": {}},
                                     "HostConfig": {
                                         "PortBindings": {
@@ -158,17 +158,6 @@ pipeline {
                                 }'
                             """
                             sh(createContainer)
-                            
-
-                            // Check container status
-                            def containerStatusCommand = """
-                                curl -s "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/json" \
-                                -H "Content-Type: application/json" \
-                                -H "X-Registry-Auth: ${authBase64}"
-                            """
-
-                            def statusResponse = sh(script: containerStatusCommand, returnStdout: true).trim()
-                            echo "Container Status Response: ${statusResponse}"
 
                             // Start container
                             def startContainer = """
