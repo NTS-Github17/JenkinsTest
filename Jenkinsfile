@@ -140,12 +140,11 @@ pipeline {
 //                             "name": "${CONTAINER_NAME}",
                             // Create container
                             def createContainer = """
-                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create" \
+                                curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create?name=${CONTAINER_NAME}" \
                                 -H "Content-Type: application/json" \
                                 -H "X-Registry-Auth: ${authBase64}" \
                                 -d '{
                                     "Image": "${IMAGE_NAME}",
-                                    "name": "${CONTAINER_NAME}",
                                     "ExposedPorts": {"8080/tcp": {}},
                                     "HostConfig": {
                                         "PortBindings": {
