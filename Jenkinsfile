@@ -116,14 +116,20 @@ pipeline {
                             echo "Base64 Encoded Auth Config: ${authBase64}"
 
                             // Check container status
-                            def containerStatusCommand = """
-                                curl -s "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/json" \
-                                -H "Content-Type: application/json" \
-                                -H "X-Registry-Auth: ${authBase64}"
-                            """
+                            // def containerStatusCommand = """
+                            //     curl -s "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/json" \
+                            //     -H "Content-Type: application/json" \
+                            //     -H "X-Registry-Auth: ${authBase64}"
+                            // """
 
-                            def statusResponse = sh(script: containerStatusCommand, returnStdout: true).trim()
-                            echo "Container Status Response: ${statusResponse}"
+                            // def statusResponse = sh(script: containerStatusCommand || jq .State.Status, returnStdout: true).trim()
+                            // echo "Container Status Response: ${statusResponse}"
+
+                            // if (statusResponse != '"running"') {
+                            //     error "Container is not running. Status: ${response}"
+                            // } else {
+                                
+                            // }
                         }
 //                         script {
 //                             def authConfig = """{
