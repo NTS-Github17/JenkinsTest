@@ -197,7 +197,6 @@ pipeline {
         }
     }
 
-    // Gửi email thông báo kết quả build trong trường hợp build fail
 //     post {
 //         failure {
 //             emailext (
