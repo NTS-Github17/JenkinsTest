@@ -53,6 +53,7 @@ pipeline {
             }
         }
 
+        
 //         stage('Quality Gate') {
 //             steps {
 //                 echo 'Checking Quality Gate...'
