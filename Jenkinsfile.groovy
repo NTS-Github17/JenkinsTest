@@ -11,25 +11,20 @@ pipeline {
     }
 
     environment {
-        // DOCKER_REGISTRY = "10.79.60.7:8010/ci-cd-test"
-        // REMOTE_DOCKER_HOST = "tcp://10.79.60.28:2375"
         REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
         OLD_IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER.toInteger() - 1}"
         REGISTRY_CREDS = credentials('dockerhub-resdii')
         CONTAINER_NAME = "ci-cd-test"
-//         scannerHome = tool 'SonarQube Scanner'
-//         sonarToken = credentials('sonarqube-token-id')
-//         DOCKERHUB_CREDENTIALS = 'dockerhub_id'
     }
 
     stages {
         stage('Checkout SCM') {
             steps {
-                    checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
+                checkout([
+                        $class           : 'GitSCM',
+                        branches         : [[name: '*/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
                 ])
             }
         }
@@ -88,7 +83,7 @@ pipeline {
                 sh 'docker rmi $IMAGE_NAME'
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 script {
@@ -128,7 +123,7 @@ pipeline {
                             // if (statusResponse != '"running"') {
                             //     error "Container is not running. Status: ${response}"
                             // } else {
-                                
+
                             // }
                         }
 //                         script {
@@ -173,7 +168,7 @@ pipeline {
 //                                 // -H "Content-Type: application/tar" \
 //                                 // -H "X-Registry-Auth: ${authBase64}" \
 //                                 // -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
-                                
+
 //                             sh(dockerPull)
 
 //                             // Create container
