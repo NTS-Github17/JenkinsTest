@@ -126,16 +126,6 @@ pipeline {
 
                             // }
                         }
-//                         script {
-//                             def authConfig = """{
-//                                 "username": "${REGISTRY_CREDENTIALS_USR}",
-//                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
-//                                 "serveraddress": "http://10.79.60.7:8010"
-//                             }"""
-
-//                             def authBase64 = sh(script: "echo '${authConfig}' | base64 | tr -d '\n'", returnStdout: true).trim()
-
-//                             echo "Base64 Encoded Auth Config: ${authBase64}"
 
 //                             // Stop old container if exists
 //                             def stopContainer = """
