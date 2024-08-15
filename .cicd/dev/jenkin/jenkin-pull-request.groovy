@@ -57,12 +57,14 @@ pipeline {
             }
         }
 
+        
         stage('Build') {
             steps {
                 checkPullRequestStatus()
                 sh 'mvn -B -DskipTests clean package'
             }
         }
+
 
         stage('Which Java?') {
             steps {
