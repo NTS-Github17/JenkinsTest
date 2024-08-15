@@ -71,7 +71,6 @@ pipeline {
                 sh 'java --version'
             }
         }
-
     }
 
     post {
