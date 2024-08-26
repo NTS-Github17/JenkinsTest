@@ -56,7 +56,6 @@ pipeline {
             }
         }
 
-
         stage('Build') {
             steps {
                 checkPullRequestStatus()
