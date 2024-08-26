@@ -194,17 +194,17 @@ pipeline {
     }
 
     // Gửi email thông báo kết quả build trong trường hợp build fail
-    post {
-        failure {
-            emailext (
-                subject: "Jenkins Pipeline Failure: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
-//                 subject: "Build failed: ${currentBuild.fullDisplayName}",
-                body: """<p>Build failed in Jenkins Pipeline:</p>
-                    <p>Project: ${env.JOB_NAME}</p>
-                    <p>Build Number: ${env.BUILD_NUMBER}</p>
-                    <p>Cause: ${currentBuild.description}</p>""",
-                recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
-            )
-        }
-    }
+//     post {
+//         failure {
+//             emailext (
+//                 subject: "Jenkins Pipeline Failure: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+// //                 subject: "Build failed: ${currentBuild.fullDisplayName}",
+//                 body: """<p>Build failed in Jenkins Pipeline:</p>
+//                     <p>Project: ${env.JOB_NAME}</p>
+//                     <p>Build Number: ${env.BUILD_NUMBER}</p>
+//                     <p>Cause: ${currentBuild.description}</p>""",
+//                 recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
+//             )
+//         }
+//     }
 }
