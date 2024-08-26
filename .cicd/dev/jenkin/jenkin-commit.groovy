@@ -9,7 +9,6 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
     }
-
     environment {
         REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
         IMAGE_NAME = "10.79.60.7:8010/ci-cd-test:${BUILD_NUMBER}"
