@@ -25,10 +25,10 @@ public class Application implements org.springframework.boot.CommandLineRunner {
 		System.out.println("============================================================ Hello World! ============================================================");
 	}
 
-	public void helloWorld() {
-		Integer a = null;
-		System.out.printf(a.toString());
-	}
+//	public void helloWorld() {
+//		Integer a = null;
+//		System.out.printf(a.toString());
+//	}
 
 //	 public void testSonarQube() {
 //	 	String unusedVariable = "This variable is not used";
