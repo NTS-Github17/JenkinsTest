@@ -16,7 +16,7 @@ pipeline {
         REGISTRY_CREDS = credentials('dockerhub-resdii')
         CONTAINER_NAME = "ci-cd-test"
     }
-    
+
     stages {
         stage('Checkout SCM') {
             steps {
@@ -75,12 +75,9 @@ pipeline {
 //         }
 
         stage('Build Docker Image') {
-            tools {
-                jdk 'jdk-8'
-            }
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-                    sh 'mvn compile jib:dockerBuild -Dimage=$IMAGE_NAME'
+                    sh 'docker build -t $IMAGE_NAME .'
                     sh 'docker push $IMAGE_NAME'
                 }
                 sh 'docker rmi $IMAGE_NAME'
