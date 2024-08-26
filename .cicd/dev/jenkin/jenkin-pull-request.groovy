@@ -73,9 +73,9 @@ pipeline {
 
     post {
         always {
-            if (sonarQubeAnalysisDone) {
-                echo 'Sending email notification...'
-                script {
+            script {
+                if (sonarQubeAnalysisDone) {
+                    echo 'Sending email notification...'
                     def qg = waitForQualityGate()
                     emailext(
                             subject: "Jenkins Pipeline Failure: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
@@ -88,9 +88,9 @@ pipeline {
                             """,
                             recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
                     )
+                } else {
+                    echo "SonarQube analysis was not performed, skipping quality gate check."
                 }
-            } else {
-                echo "SonarQube analysis was not performed, skipping quality gate check."
             }
         }
     }
