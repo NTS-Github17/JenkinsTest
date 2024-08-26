@@ -17,7 +17,6 @@ pipeline {
         CONTAINER_NAME = "ci-cd-test"
     }
 
-
     stages {
         stage('Checkout SCM') {
             steps {
