@@ -57,7 +57,7 @@ pipeline {
             }
         }
 
-        
+
         stage('Build') {
             steps {
                 checkPullRequestStatus()
@@ -70,7 +70,6 @@ pipeline {
                 sh 'java --version'
             }
         }
-
     }
 
     post {
