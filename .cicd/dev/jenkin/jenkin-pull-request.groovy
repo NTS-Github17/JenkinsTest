@@ -1,5 +1,7 @@
 boolean sonarQubeAnalysisDone = false
 
+def check_runs = load '.cicd/buildGithubCheckScript.groovy'
+
 pipeline {
     agent any
     tools {
@@ -12,6 +14,7 @@ pipeline {
         REPO_CREDENTIALS = credentials('pat_github')
         SONARQUBE_AUTH_TOKEN = credentials('sonarqube-auth-token')
         GITHUB_TOKEN = credentials('github-token')
+        REPO_NAME = "JenkinsTest"
     }
 
     stages {
@@ -59,7 +62,16 @@ pipeline {
         stage('Build') {
             steps {
                 checkPullRequestStatus()
-                sh 'mvn -B -DskipTests clean package'
+                withCredentials([string(credentialsId: 'github-app-private-key', variable: 'privateKey')]) {
+                    try {
+                        sh 'mvn -B -DskipTests clean package'
+                        check_runs.buildGithubCheck(${REPO_NAME}, env.GIT_COMMIT, privateKey, 'success', "build")
+                    } catch (Exception e) {
+                        check_runs.buildGithubCheck(${REPO_NAME}, env.GIT_COMMIT, privateKey, 'failure', "build")
+                        echo "Exception: ${e}"
+                    }
+                }
+//                sh 'mvn -B -DskipTests clean package'
             }
         }
 
