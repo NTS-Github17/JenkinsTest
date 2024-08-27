@@ -1,6 +1,5 @@
 //@Grab(group='io.jsonwebtoken', module='jjwt', version='0.4')
 
-import sun.net.www.protocol.https.HttpsURLConnectionImpl
 import java.text.SimpleDateFormat
 import java.lang.reflect.*
 import java.util.*
@@ -20,19 +19,29 @@ import org.codehaus.groovy.runtime.GStringImpl
 
 
 // Custom HTTP request method
+//def setRequestMethod(HttpURLConnection c, String requestMethod) {
+//    try {
+//        final Object target;
+//        if (c instanceof HttpsURLConnectionImpl) {
+//            final Field delegate = HttpsURLConnectionImpl.class.getDeclaredField("delegate");
+//            delegate.setAccessible(true);
+//            target = delegate.get(c);
+//        } else {
+//            target = c;
+//        }
+//        final Field f = HttpURLConnection.class.getDeclaredField("method");
+//        f.setAccessible(true);
+//        f.set(target, requestMethod);
+//    } catch (IllegalAccessException | NoSuchFieldException ex) {
+//        throw new AssertionError(ex);
+//    }
+//}
+
 def setRequestMethod(HttpURLConnection c, String requestMethod) {
     try {
-        final Object target;
-        if (c instanceof HttpsURLConnectionImpl) {
-            final Field delegate = HttpsURLConnectionImpl.class.getDeclaredField("delegate");
-            delegate.setAccessible(true);
-            target = delegate.get(c);
-        } else {
-            target = c;
-        }
         final Field f = HttpURLConnection.class.getDeclaredField("method");
         f.setAccessible(true);
-        f.set(target, requestMethod);
+        f.set(c, requestMethod);
     } catch (IllegalAccessException | NoSuchFieldException ex) {
         throw new AssertionError(ex);
     }
@@ -65,8 +74,8 @@ def getJsonWebToken(privateKey) {
 def getRSAPrivateKey(privateKey) {
     try {
         String privateKeyPEM = readFile privateKey
-        privateKeyPEM = privateKeyPEM.replace("-----BEGIN CERTIFICATE-----\n", "");
-        privateKeyPEM = privateKeyPEM.replace("-----END CERTIFICATE-----", "");
+        privateKeyPEM = privateKeyPEM.replace("-----BEGIN PRIVATE KEY-----\n", "");
+        privateKeyPEM = privateKeyPEM.replace("-----END PRIVATE KEY-----", "");
 
         byte[] encoded = Base64.decodeBase64(privateKeyPEM);
         KeyFactory kf = KeyFactory.getInstance("RSA");

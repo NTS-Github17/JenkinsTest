@@ -1,6 +1,5 @@
 boolean sonarQubeAnalysisDone = false
 
-//def check_runs = evaluate(new File('./.cicd/buildGithubCheckScript.groovy'))
 def check_runs
 
 pipeline {
