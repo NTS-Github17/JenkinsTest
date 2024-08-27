@@ -1,6 +1,7 @@
 boolean sonarQubeAnalysisDone = false
 
-def check_runs = evaluate(new File('./.cicd/buildGithubCheckScript.groovy'))
+//def check_runs = evaluate(new File('./.cicd/buildGithubCheckScript.groovy'))
+def check_runs
 
 pipeline {
     agent any
@@ -18,6 +19,14 @@ pipeline {
     }
 
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    check_runs = load('./.cicd/buildGithubCheckScript.groovy')
+                }
+            }
+        }
+
         stage('Checkout SCM') {
             steps {
                 script {

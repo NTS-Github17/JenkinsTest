@@ -198,3 +198,5 @@ def buildGithubCheck(repository, commitID, privateKey, status, checkName) {
         error "Failed to create a check run, status code: ${getStatusCode}"
     }
 }
+
+return this
