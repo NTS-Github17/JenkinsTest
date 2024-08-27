@@ -73,7 +73,8 @@ def getJsonWebToken(privateKey) {
 
 def getRSAPrivateKey(privateKey) {
     try {
-        String privateKeyPEM = readFile privateKey
+        string privateKeyPEM = privateKey
+//        String privateKeyPEM = readFile privateKey
         privateKeyPEM = privateKeyPEM.replace("-----BEGIN PRIVATE KEY-----\n", "");
         privateKeyPEM = privateKeyPEM.replace("-----END PRIVATE KEY-----", "");
 
