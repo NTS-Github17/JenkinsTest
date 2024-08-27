@@ -101,7 +101,6 @@ def accessTime() {
     }
 }
 
-
 def validateAuth(jsonWebToken) {
     try {
         def httpConn = new URL("https://api.github.com/app").openConnection();
