@@ -70,7 +70,6 @@ def getJsonWebToken(privateKey) {
     }
 }
 
-
 def getRSAPrivateKey(privateKey) {
     try {
         string privateKeyPEM = privateKey
