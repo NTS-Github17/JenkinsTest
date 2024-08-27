@@ -1,4 +1,4 @@
-@Grab(group='io.jsonwebtoken', module='jjwt', version='0.4')
+//@Grab(group='io.jsonwebtoken', module='jjwt', version='0.4')
 
 import sun.net.www.protocol.https.HttpsURLConnectionImpl
 import java.text.SimpleDateFormat
