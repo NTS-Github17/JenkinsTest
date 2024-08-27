@@ -61,15 +61,18 @@ pipeline {
 
         stage('Build') {
             steps {
-                checkPullRequestStatus()
-                withCredentials([string(credentialsId: 'github-app-private-key', variable: 'privateKey')]) {
-                    try {
-                        sh 'mvn -B -DskipTests clean package'
-                        check_runs.buildGithubCheck(${REPO_NAME}, env.GIT_COMMIT, privateKey, 'success', "build")
-                    } catch (Exception e) {
-                        check_runs.buildGithubCheck(${REPO_NAME}, env.GIT_COMMIT, privateKey, 'failure', "build")
-                        echo "Exception: ${e}"
+                script {
+                    checkPullRequestStatus()
+                    withCredentials([string(credentialsId: 'github-app-private-key', variable: 'privateKey')]) {
+                        try {
+                            sh 'mvn -B -DskipTests clean package'
+                            check_runs.buildGithubCheck(${REPO_NAME}, env.GIT_COMMIT, privateKey, 'success', "build")
+                        } catch (Exception e) {
+                            check_runs.buildGithubCheck(${REPO_NAME}, env.GIT_COMMIT, privateKey, 'failure', "build")
+                            echo "Exception: ${e}"
+                        }
                     }
+
                 }
 //                sh 'mvn -B -DskipTests clean package'
             }
