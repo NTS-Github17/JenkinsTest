@@ -50,7 +50,7 @@ def setRequestMethod(HttpURLConnection c, String requestMethod) {
 
 APP_ID = 979137
 INSTALLATION_ID = 54164936
-ORGANIZATION_NAME = NTS-Github17
+ORGANIZATION_NAME = 'NTS-Github17'
 
 def getJsonWebToken(privateKey) {
     try {
