@@ -1,20 +1,20 @@
 //@Grab(group='io.jsonwebtoken', module='jjwt', version='0.4')
 
-//import java.text.SimpleDateFormat
+import java.text.SimpleDateFormat
 import java.lang.reflect.*
-//import java.util.*
-//import java.nio.charset.StandardCharsets
-//import java.io.*
-//import javax.crypto.KeyGenerator
+import java.util.*
+import java.nio.charset.StandardCharsets
+import java.io.*
+import javax.crypto.KeyGenerator
 import java.security.*
-//import groovy.json.*
+import groovy.json.*
 import io.jsonwebtoken.*
 import java.security.interfaces.RSAPrivateKey
 import java.security.spec.*
 import static io.jsonwebtoken.SignatureAlgorithm.RS256
-//import java.util.Base64.Decoder
-//import org.apache.commons.codec.binary.Base64
-//import org.codehaus.groovy.runtime.GStringImpl
+import java.util.Base64.Decoder
+import org.apache.commons.codec.binary.Base64
+import org.codehaus.groovy.runtime.GStringImpl
 
 
 
