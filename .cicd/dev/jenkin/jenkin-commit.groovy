@@ -8,6 +8,7 @@ pipeline {
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
+        skipDefaultCheckout(true)
     }
     environment {
         REMOTE_DOCKER_HOST = "http://10.79.60.28:2375"
@@ -20,11 +21,16 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                checkout([
-                        $class           : 'GitSCM',
-                        branches         : [[name: '*/dev']],
-                        userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
-                ])
+//                checkout([
+//                        $class           : 'GitSCM',
+//                        branches         : [[name: '**']],
+//                        userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
+//                ])
+
+                checkout scmGit(
+                        branches: [[name: '**']],
+                        extensions: [],
+                        userRemoteConfigs: [[credentialsId: 'pat_github', url: 'https://github.com/NTS-Github17/JenkinsTest.git']])
             }
         }
 
