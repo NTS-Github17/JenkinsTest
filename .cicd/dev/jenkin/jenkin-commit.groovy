@@ -21,16 +21,15 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-//                checkout([
-//                        $class           : 'GitSCM',
-//                        branches         : [[name: '**']],
-//                        userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
-//                ])
-
+                echo 'Checking out code...'
                 checkout scmGit(
-                        branches: [[name: '**']],
-                        extensions: [],
-                        userRemoteConfigs: [[credentialsId: 'pat_github', url: 'https://github.com/NTS-Github17/JenkinsTest.git']])
+                        branches: [[name: 'dev']],
+                        extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
+                        userRemoteConfigs: [[
+                                                    credentialsId: 'pat_github',
+                                                    url: 'https://github.com/NTS-Github17/JenkinsTest.git'
+                                            ]]
+                )
             }
         }
 
@@ -58,28 +57,6 @@ pipeline {
             }
         }
 
-
-//         stage('Quality Gate') {
-//             steps {
-//                 echo 'Checking Quality Gate...'
-//                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
-//                 timeout(time: 10, unit: 'MINUTES') {
-//                     script {
-// //                         waitForQualityGate abortPipeline: true
-// //                         def json = sh(script: 'curl -s -u admin:Resdii@168861 http://10.79.60.7:9000/api/qualitygates/project_status?projectKey=SpringBootApplication', returnStdout: true)
-// //                         def result = readJSON text: json
-// //                         if (result.projectStatus.status != 'OK') {
-// //                             error "Pipeline aborted due to quality gate failure: ${result.projectStatus.status}"
-// //                         }
-//                         def qg = waitForQualityGate()
-//                         if (qg.status != 'OK') {
-//                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-
         stage('Build Docker Image') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
@@ -104,98 +81,7 @@ pipeline {
                                 docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
                                 """
                             }
-
-                            def authConfig = """{
-//                                 "username": "${REGISTRY_CREDENTIALS_USR}",
-//                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
-//                                 "serveraddress": "http://10.79.60.7:8010"
-//                             }"""
-
-                            def authBase64 = sh(script: "echo '${authConfig}' | base64 | tr -d '\n'", returnStdout: true).trim()
-
-                            echo "Base64 Encoded Auth Config: ${authBase64}"
-
-                            // Check container status
-                            // def containerStatusCommand = """
-                            //     curl -s "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/json" \
-                            //     -H "Content-Type: application/json" \
-                            //     -H "X-Registry-Auth: ${authBase64}"
-                            // """
-
-                            // def statusResponse = sh(script: containerStatusCommand || jq .State.Status, returnStdout: true).trim()
-                            // echo "Container Status Response: ${statusResponse}"
-
-                            // if (statusResponse != '"running"') {
-                            //     error "Container is not running. Status: ${response}"
-                            // } else {
-
-                            // }
                         }
-
-//                             // Stop old container if exists
-//                             def stopContainer = """
-//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/stop" \
-//                                 -H "Content-Type: application/json" || true
-//                             """
-//                             sh(stopContainer)
-// //
-//                             // Remove old container if exists
-//                             def removeContainer = """
-//                                 curl -s -X DELETE "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}" \
-//                                 -H "Content-Type: application/json" || true
-//                             """
-//                             sh(removeContainer)
-// //
-// //                             // Remove old image
-// //                             def removeOldImage = """
-// //                                 curl -s -X DELETE "${REMOTE_DOCKER_HOST}/images/${IMAGE_NAME}" \
-// //                                 -H "Content-Type: application/json" || true
-// //                             """
-// //                             sh(removeOldImage)
-
-//                             // Pull new image
-//                             def dockerPull = """
-//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}" \
-//                                 -H "Content-Type: application/json" \
-//                                 -H "X-Registry-Auth: ${authBase64}"
-//                             """
-//                             // curl --unix-socket /var/run/docker.sock \
-//                                 // -H "Content-Type: application/tar" \
-//                                 // -H "X-Registry-Auth: ${authBase64}" \
-//                                 // -X POST "${REMOTE_DOCKER_HOST}/images/create?fromImage=${IMAGE_NAME}"
-
-//                             sh(dockerPull)
-
-//                             // Create container
-//                             def createContainer = """
-//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/create?name=${CONTAINER_NAME}" \
-//                                 -H "Content-Type: application/json" \
-//                                 -H "X-Registry-Auth: ${authBase64}" \
-//                                 -d '{
-//                                     "Image": "${IMAGE_NAME}",
-//                                     "ExposedPorts": {"8080/tcp": {}},
-//                                     "HostConfig": {
-//                                         "PortBindings": {
-//                                             "8080/tcp": [
-//                                                 {
-//                                                     "HostPort": "8085"
-//                                                 }
-//                                             ]
-//                                         }
-//                                     }
-//                                 }'
-//                             """
-//                             sh(createContainer)
-
-
-//                             // Start container
-//                             def startContainer = """
-//                                 curl -s -X POST "${REMOTE_DOCKER_HOST}/containers/${CONTAINER_NAME}/start" \
-//                                 -H "Content-Type: application/json" \
-//                                 -H "X-Registry-Auth: ${authBase64}"
-//                             """
-//                             sh(startContainer)
-//                         }
                     }
                 }
             }
