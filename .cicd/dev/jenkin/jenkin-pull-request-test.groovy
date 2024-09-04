@@ -1,11 +1,12 @@
 boolean sonarQubeAnalysisDone = false
 
-def check_runs
-
 pipeline {
     agent any
     tools {
         maven 'maven'
+    }
+    triggers {
+        githubPullRequests()
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
