@@ -52,6 +52,7 @@ pipeline {
                 }
             }
         }
+        
 
         
 //         stage('Quality Gate') {
@@ -76,9 +77,12 @@ pipeline {
 //         }
 
         stage('Build Docker Image') {
+            tools {
+                jdk 'jdk-8'
+            }
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
-                    sh 'docker build -t $IMAGE_NAME .'
+                    sh 'mvn compile jib:dockerBuild -Dimage=$IMAGE_NAME'
                     sh 'docker push $IMAGE_NAME'
                 }
                 sh 'docker rmi $IMAGE_NAME'
@@ -127,16 +131,6 @@ pipeline {
 
                             // }
                         }
-//                         script {
-//                             def authConfig = """{
-//                                 "username": "${REGISTRY_CREDENTIALS_USR}",
-//                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
-//                                 "serveraddress": "http://10.79.60.7:8010"
-//                             }"""
-
-//                             def authBase64 = sh(script: "echo '${authConfig}' | base64 | tr -d '\n'", returnStdout: true).trim()
-
-//                             echo "Base64 Encoded Auth Config: ${authBase64}"
 
 //                             // Stop old container if exists
 //                             def stopContainer = """
@@ -208,7 +202,6 @@ pipeline {
         }
     }
 
-    // Gửi email thông báo kết quả build trong trường hợp build fail
 //     post {
 //         failure {
 //             emailext (
