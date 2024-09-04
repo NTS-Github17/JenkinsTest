@@ -5,14 +5,14 @@ pipeline {
     tools {
         maven 'maven'
     }
-    triggers {
-        githubPullRequests()
-    }
+//    triggers {
+//        githubPullRequests()
+//    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
         skipDefaultCheckout(true)
     }
-    
+
     environment {
         REPO_CREDENTIALS = credentials('pat_github')
         SONARQUBE_AUTH_TOKEN = credentials('sonarqube-auth-token')
