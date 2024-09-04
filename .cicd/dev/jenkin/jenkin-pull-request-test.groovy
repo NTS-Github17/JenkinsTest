@@ -5,14 +5,13 @@ pipeline {
     tools {
         maven 'maven'
     }
-    triggers {
-        githubPullRequests()
-    }
+//    triggers {
+//        githubPullRequests(spec: String, triggerMode: 'HEAVY_HOOKS', events: [pullRequest])
+//    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
         skipDefaultCheckout(true)
     }
-
     environment {
         REPO_CREDENTIALS = credentials('pat_github')
         SONARQUBE_AUTH_TOKEN = credentials('sonarqube-auth-token')
@@ -30,7 +29,8 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
+                    echo 'Checking out PR branch...abcdefghi'
                     checkout scmGit(
                             branches: [[name: 'origin/pr/*/merge']],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
@@ -48,7 +48,7 @@ pipeline {
         stage('SonarQube Analysis & Quality Gate') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
                     withSonarQubeEnv(installationName: 'sonar') {
                         sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                     }
@@ -70,7 +70,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
                     sh 'mvn -B -DskipTests clean package'
                 }
             }
@@ -116,7 +116,6 @@ pipeline {
         }
     }
 }
-
 
 def checkPullRequestStatus() {
     def response = httpRequest(
