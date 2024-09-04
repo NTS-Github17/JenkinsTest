@@ -29,7 +29,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
                     checkout scmGit(
                             branches: [[name: 'origin/pr/*/merge']],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
@@ -47,7 +47,7 @@ pipeline {
         stage('SonarQube Analysis & Quality Gate') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
                     withSonarQubeEnv(installationName: 'sonar') {
                         sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                     }
@@ -69,7 +69,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
                     sh 'mvn -B -DskipTests clean package'
                 }
             }
