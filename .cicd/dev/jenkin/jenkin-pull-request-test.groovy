@@ -117,21 +117,21 @@ pipeline {
 }
 
 
-//def checkPullRequestStatus() {
-//    def response = httpRequest(
-//            url: "https://api.github.com/repos/NTS-Github17/JenkinsTest/pulls/${ghprbPullId}",
-//            customHeaders: [[name: 'Authorization', value: "token ${GITHUB_TOKEN}"]],
-//            httpMode: 'GET',
-//            validResponseCodes: '200'
-//    )
-//
-//    echo "GITHUB_TOKEN: ${GITHUB_TOKEN}"
-//    echo "Response: ${response.content}"
-//
-//    def jsonResponse = readJSON text: response.content
-//    def prState = jsonResponse.state
-//    if (prState == 'closed') {
-//        currentBuild.description = "PR ${ghprbPullId} is closed. Aborting build."
-//        error "Pull request is closed. Aborting pipeline."
-//    }
-//}
+def checkPullRequestStatus() {
+    def response = httpRequest(
+            url: "https://api.github.com/repos/NTS-Github17/JenkinsTest/pulls/${ghprbPullId}",
+            customHeaders: [[name: 'Authorization', value: "token ${GITHUB_TOKEN}"]],
+            httpMode: 'GET',
+            validResponseCodes: '200'
+    )
+
+    echo "GITHUB_TOKEN: ${GITHUB_TOKEN}"
+    echo "Response: ${response.content}"
+
+    def jsonResponse = readJSON text: response.content
+    def prState = jsonResponse.state
+    if (prState == 'closed') {
+        currentBuild.description = "PR ${ghprbPullId} is closed. Aborting build."
+        error "Pull request is closed. Aborting pipeline."
+    }
+}
