@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
 //                    checkPullRequestStatus()
-                    echo 'Checking out PR branch...abcdef'
+                    echo 'Checking out PR branch...abcdefghi'
                     checkout scmGit(
                             branches: [[name: 'origin/pr/*/merge']],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
