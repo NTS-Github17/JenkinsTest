@@ -30,6 +30,9 @@ pipeline {
             steps {
                 script {
 //                    checkPullRequestStatus()
+                    echo "ghprbActualCommit: ${ghprbActualCommit}"
+                    echo "ghprbPullId: ${ghprbPullId}"
+                    echo 'Checking out PR branch...'
                     checkout scmGit(
                             branches: [[name: 'origin/pr/*/merge']],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
