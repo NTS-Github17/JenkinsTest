@@ -103,6 +103,7 @@ pipeline {
                     echo "SonarQube analysis was not performed, skipping quality gate check."
                 }
 
+                
                 echo "Cleaning up workspace..."
 
                 cleanWs(
