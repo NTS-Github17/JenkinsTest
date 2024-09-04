@@ -9,6 +9,7 @@ pipeline {
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
+        skipDefaultCheckout(true)
     }
     environment {
         REPO_CREDENTIALS = credentials('pat_github')
@@ -18,11 +19,10 @@ pipeline {
     }
 
     stages {
-        stage('Initialize') {
+        stage('Prepare Workspace') {
             steps {
-                script {
-                    check_runs = load('./.cicd/buildGithubCheckScript.groovy')
-                }
+                // Clean the workspace before starting the build
+                cleanWs()
             }
         }
 
@@ -30,17 +30,16 @@ pipeline {
             steps {
                 script {
                     checkPullRequestStatus()
-                    checkout([
-                            $class           : 'GitSCM',
-                            branches         : [[name: "${ghprbActualCommit}"]],
-                            extensions       : [],
+                    checkout scmGit(
+                            branches: [[name: '${ghprbActualCommit}']],
+                            extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
-                                                        name         : 'origin',
-                                                        url          : 'https://github.com/NTS-Github17/JenkinsTest.git',
-                                                        refspec      : "+refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*"
+                                                        name: 'origin',
+                                                        refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
+                                                        url: 'https://github.com/Resdii-JSC/vars-3d-webapp.git'
                                                 ]]
-                    ])
+                    )
                 }
             }
         }
@@ -71,18 +70,8 @@ pipeline {
             steps {
                 script {
                     checkPullRequestStatus()
-                    withCredentials([string(credentialsId: 'github-app-private-key', variable: 'privateKey')]) {
-                        try {
-                            sh 'mvn -B -DskipTests clean package'
-                            check_runs.buildGithubCheck(REPO_NAME, env.GIT_COMMIT, privateKey, 'success', "build")
-                        } catch (Exception e) {
-                            check_runs.buildGithubCheck(REPO_NAME, env.GIT_COMMIT, privateKey, 'failure', "build")
-                            echo "Exception: ${e}"
-                        }
-                    }
-
+                    sh 'mvn -B -DskipTests clean package'
                 }
-//                sh 'mvn -B -DskipTests clean package'
             }
         }
 
@@ -113,6 +102,15 @@ pipeline {
                 } else {
                     echo "SonarQube analysis was not performed, skipping quality gate check."
                 }
+
+                echo "Cleaning up workspace..."
+
+                cleanWs(
+                        cleanWhenNotBuilt: false,      // Không xóa workspace khi build không được thực hiện
+                        deleteDirs: true,              // Xóa cả thư mục
+                        disableDeferredWipeout: true,  // Không trì hoãn việc xóa
+                        notFailBuild: true             // Không làm fail build nếu việc xóa gặp lỗi
+                )
             }
         }
     }
