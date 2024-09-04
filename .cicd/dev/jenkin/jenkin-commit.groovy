@@ -99,7 +99,6 @@ pipeline {
                                 """
                             }
 
-
                             def authConfig = """{
 //                                 "username": "${REGISTRY_CREDENTIALS_USR}",
 //                                 "password": "${REGISTRY_CREDENTIALS_PSW}",
