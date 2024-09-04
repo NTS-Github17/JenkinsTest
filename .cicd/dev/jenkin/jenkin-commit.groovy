@@ -79,6 +79,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-resdii', usernameVariable: 'REGISTRY_CREDENTIALS_USR', passwordVariable: 'REGISTRY_CREDENTIALS_PSW')]) {
                         script {
+
                             sshagent(['vars3d-ssh-remote']) {
                                 sh """ ssh -o StrictHostKeyChecking=no root@10.79.60.28 '
                                 docker pull $IMAGE_NAME && \\
@@ -87,6 +88,7 @@ pipeline {
                                 docker rmi $OLD_IMAGE_NAME && \\
                                 docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
                                 """
+                                
                             }
                         }
                     }
