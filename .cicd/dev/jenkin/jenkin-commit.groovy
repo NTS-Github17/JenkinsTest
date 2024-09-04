@@ -53,28 +53,6 @@ pipeline {
             }
         }
 
-
-//         stage('Quality Gate') {
-//             steps {
-//                 echo 'Checking Quality Gate...'
-//                 // Nếu sonar cho ra kết quả fail thì build sẽ fail
-//                 timeout(time: 10, unit: 'MINUTES') {
-//                     script {
-// //                         waitForQualityGate abortPipeline: true
-// //                         def json = sh(script: 'curl -s -u admin:Resdii@168861 http://10.79.60.7:9000/api/qualitygates/project_status?projectKey=SpringBootApplication', returnStdout: true)
-// //                         def result = readJSON text: json
-// //                         if (result.projectStatus.status != 'OK') {
-// //                             error "Pipeline aborted due to quality gate failure: ${result.projectStatus.status}"
-// //                         }
-//                         def qg = waitForQualityGate()
-//                         if (qg.status != 'OK') {
-//                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-
         stage('Build Docker Image') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-resdii', url: 'http://10.79.60.7:8010/') {
