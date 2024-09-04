@@ -21,12 +21,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-//                checkout([
-//                        $class           : 'GitSCM',
-//                        branches         : [[name: '**']],
-//                        userRemoteConfigs: [[url: 'https://github.com/NTS-Github17/JenkinsTest.git']]
-//                ])
-
+                echo 'Checking out code...'
                 checkout scmGit(
                         branches: [[name: '**']],
                         extensions: [],
