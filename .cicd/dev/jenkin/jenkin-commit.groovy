@@ -19,6 +19,13 @@ pipeline {
     }
 
     stages {
+        stage('Prepare Workspace') {
+            steps {
+                // Clean the workspace before starting the build
+                cleanWs()
+            }
+        }
+
         stage('Checkout SCM') {
             steps {
                 echo 'Checking out code...'
@@ -88,7 +95,19 @@ pipeline {
         }
     }
 
-//     post {
+     post {
+         always {
+             script {
+                 echo "Cleaning up workspace..."
+
+                 cleanWs(
+                         cleanWhenNotBuilt: false,      // Không xóa workspace khi build không được thực hiện
+                         deleteDirs: true,              // Xóa cả thư mục
+                         disableDeferredWipeout: true,  // Không trì hoãn việc xóa
+                         notFailBuild: true             // Không làm fail build nếu việc xóa gặp lỗi
+                 )
+             }
+         }
 //         failure {
 //             emailext (
 //                 subject: "Jenkins Pipeline Failure: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
@@ -100,5 +119,5 @@ pipeline {
 //                 recipientProviders: [[$class: 'CulpritsRecipientProvider'], [$class: 'DevelopersRecipientProvider']]
 //             )
 //         }
-//     }
+     }
 }
