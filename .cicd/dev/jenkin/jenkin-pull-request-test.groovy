@@ -32,13 +32,13 @@ pipeline {
                 script {
                     checkPullRequestStatus()
                     checkout scmGit(
-                            branches: [[name: '${ghprbActualCommit}']],
+                            branches: [[name: 'origin/pr/*/merge']],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
                                                         name: 'origin',
                                                         refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
-                                                        url: 'https://github.com/Resdii-JSC/vars-3d-webapp.git'
+                                                        url: 'https://github.com/NTS-Github17/JenkinsTest.git'
                                                 ]]
                     )
                 }

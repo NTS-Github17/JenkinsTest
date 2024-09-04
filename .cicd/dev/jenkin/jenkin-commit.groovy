@@ -88,7 +88,7 @@ pipeline {
                                 docker rmi $OLD_IMAGE_NAME && \\
                                 docker run -d --name ci-cd-test -p 8085:8080 $IMAGE_NAME '
                                 """
-                                
+
                             }
                         }
                     }
