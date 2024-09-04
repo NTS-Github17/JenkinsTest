@@ -16,7 +16,6 @@ pipeline {
         REPO_CREDENTIALS = credentials('pat_github')
         SONARQUBE_AUTH_TOKEN = credentials('sonarqube-auth-token')
         GITHUB_TOKEN = credentials('github-token')
-        REPO_NAME = "JenkinsTest"
     }
 
     stages {
