@@ -14,12 +14,11 @@ pipeline {
         SONARQUBE_AUTH_TOKEN = credentials('sonarqube-auth-token')
         GITHUB_TOKEN = credentials('github-token')
     }
-
-
+    
     stages {
         stage('Prepare Workspace') {
             steps {
-                echo "PR ID: ${env.CHANGE_ID}"
+                echo "PR ID: ${env.CHANGE_BRANCH}"
                 // Clean the workspace before starting the build
                 cleanWs()
             }
