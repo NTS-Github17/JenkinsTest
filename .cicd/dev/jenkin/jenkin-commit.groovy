@@ -3,9 +3,9 @@ pipeline {
     tools {
         maven 'maven'
     }
-    triggers {
-        githubPush()
-    }
+//    triggers {
+//        githubPush()
+//    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
         skipDefaultCheckout(true)
