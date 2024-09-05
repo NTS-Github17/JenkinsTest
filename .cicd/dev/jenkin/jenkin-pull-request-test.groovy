@@ -26,10 +26,9 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    echo 'Checking out PR branch...123456'
-                    echo "PR ID: ${env.CHANGE_ID}"
+                    echo 'Checking out PR branch...123'
                     checkout scmGit(
-                            branches: [[name: "origin/pr/${env.CHANGE_ID}/merge"]],
+                            branches: [[name: "origin/pr/*/merge"]],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
