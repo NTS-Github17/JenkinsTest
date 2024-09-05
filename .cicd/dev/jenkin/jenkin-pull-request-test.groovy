@@ -14,9 +14,6 @@ pipeline {
         SONARQUBE_AUTH_TOKEN = credentials('sonarqube-auth-token')
         GITHUB_TOKEN = credentials('github-token')
     }
-
-
-    
     stages {
         stage('Prepare Workspace') {
             steps {
