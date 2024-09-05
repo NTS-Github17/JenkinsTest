@@ -33,7 +33,7 @@ pipeline {
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
-                                                        name: 'origin',
+                                                        name: '',
                                                         refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
                                                         url: 'https://github.com/NTS-Github17/JenkinsTest.git'
                                                 ]]
