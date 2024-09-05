@@ -5,9 +5,11 @@ pipeline {
     tools {
         maven 'maven'
     }
+
 //    triggers {
 //        githubPullRequests(spec: String, triggerMode: 'HEAVY_HOOKS', events: [pullRequest])
 //    }
+    
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
         skipDefaultCheckout(true)
