@@ -19,6 +19,7 @@ pipeline {
     stages {
         stage('Prepare Workspace') {
             steps {
+                echo "PR ID: ${env.CHANGE_ID}"
                 // Clean the workspace before starting the build
                 cleanWs()
             }
