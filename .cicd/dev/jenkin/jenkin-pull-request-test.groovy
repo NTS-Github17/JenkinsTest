@@ -5,9 +5,6 @@ pipeline {
     tools {
         maven 'maven'
     }
-//    triggers {
-//        githubPullRequests(spec: String, triggerMode: 'HEAVY_HOOKS', events: [pullRequest])
-//    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '5'))
         skipDefaultCheckout(true)
@@ -29,7 +26,6 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-//                    checkPullRequestStatus()
                     echo 'Checking out PR branch...123456'
                     checkout scmGit(
                             branches: [[name: 'origin/pr/*/merge']],
@@ -48,7 +44,6 @@ pipeline {
         stage('SonarQube Analysis & Quality Gate') {
             steps {
                 script {
-//                    checkPullRequestStatus()
                     withSonarQubeEnv(installationName: 'sonar') {
                         sh 'mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                     }
@@ -70,7 +65,6 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-//                    checkPullRequestStatus()
                     sh 'mvn -B -DskipTests clean package'
                 }
             }
@@ -116,23 +110,3 @@ pipeline {
         }
     }
 }
-
-//
-//def checkPullRequestStatus() {
-//    def response = httpRequest(
-//            url: "https://api.github.com/repos/NTS-Github17/JenkinsTest/pulls/${ghprbPullId}",
-//            customHeaders: [[name: 'Authorization', value: "token ${GITHUB_TOKEN}"]],
-//            httpMode: 'GET',
-//            validResponseCodes: '200'
-//    )
-//
-//    echo "GITHUB_TOKEN: ${GITHUB_TOKEN}"
-//    echo "Response: ${response.content}"
-//
-//    def jsonResponse = readJSON text: response.content
-//    def prState = jsonResponse.state
-//    if (prState == 'closed') {
-//        currentBuild.description = "PR ${ghprbPullId} is closed. Aborting build."
-//        error "Pull request is closed. Aborting pipeline."
-//    }
-//}
