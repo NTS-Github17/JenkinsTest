@@ -17,6 +17,8 @@ pipeline {
         REGISTRY_CREDS = credentials('dockerhub-resdii')
         CONTAINER_NAME = "ci-cd-test"
     }
+
+
     
     stages {
         stage('Prepare Workspace') {
