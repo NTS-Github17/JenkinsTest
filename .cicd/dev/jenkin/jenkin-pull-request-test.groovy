@@ -18,6 +18,7 @@ pipeline {
     stages {
         stage('Prepare Workspace') {
             steps {
+                echo "Branch: ${env.BRANCH_NAME}"
                 // Clean the workspace before starting the build
                 cleanWs()
             }
@@ -26,9 +27,9 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    echo 'Checking out PR branch...abcd'
+                    echo 'Checking out PR branch...abcde'
                     checkout scmGit(
-                            branches: [[name: "origin/pr/*"]],
+                            branches: [[name: "origin/pr/*/head"]],
                             extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
