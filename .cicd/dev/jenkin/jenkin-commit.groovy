@@ -18,6 +18,7 @@ pipeline {
         CONTAINER_NAME = "ci-cd-test"
     }
 
+    
     stages {
         stage('Prepare Workspace') {
             steps {
