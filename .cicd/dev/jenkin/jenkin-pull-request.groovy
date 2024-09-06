@@ -29,7 +29,7 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
 
                     echo "GhprbActualCommit: ${ghprbActualCommit}"
                     echo "GhprbPullId: ${ghprbPullId}"
@@ -38,13 +38,13 @@ pipeline {
                     echo "sha1: ${sha1}"
 
                     checkout scmGit(
-                            branches: [[name: '${ghprbActualCommit}']],
-                            extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
+                            branches         : [[name: "${ghprbActualCommit}"]],
+                            extensions       : [],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
-                                                        name: 'origin',
-                                                        refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
-                                                        url: 'https://github.com/Resdii-JSC/vars-3d-webapp.git'
+                                                        name         : 'origin',
+                                                        url          : 'https://github.com/NTS-Github17/JenkinsTest.git',
+                                                        refspec      : "+refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*"
                                                 ]]
                     )
                 }
