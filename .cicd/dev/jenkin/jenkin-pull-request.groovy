@@ -29,14 +29,13 @@ pipeline {
         stage('Checkout SCM') {
             steps {
                 script {
-                    checkPullRequestStatus()
+//                    checkPullRequestStatus()
 
                     echo "GhprbActualCommit: ${ghprbActualCommit}"
                     echo "GhprbPullId: ${ghprbPullId}"
                     echo "GhprbSourceBranch: ${ghprbSourceBranch}"
                     echo "GhprbTargetBranch: ${ghprbTargetBranch}"
                     echo "sha1: ${sha1}"
-
 
                     checkout scmGit(
                             branches         : [[name: "${ghprbActualCommit}"]],
