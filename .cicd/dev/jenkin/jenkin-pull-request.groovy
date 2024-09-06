@@ -43,7 +43,7 @@ pipeline {
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
                                                         name         : 'origin',
-                                                        url          : 'https://github.com/Resdii-JSC/vars-3d-api.git',
+                                                        url          : 'https://github.com/NTS-Github17/JenkinsTest.git',
                                                         refspec      : "+refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*"
                                                 ]]
                     )
