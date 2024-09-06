@@ -39,13 +39,13 @@ pipeline {
 
 
                     checkout scmGit(
-                            branches: [[name: '${ghprbActualCommit}']],
-                            extensions: [],
+                            branches         : [[name: "${ghprbActualCommit}"]],
+                            extensions       : [],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
-                                                        name: 'origin',
-                                                        refspec: '+refs/pull/*:refs/remotes/origin/pr/*',
-                                                        url: 'https://github.com/Resdii-JSC/vars-3d-webapp.git'
+                                                        name         : 'origin',
+                                                        url          : 'https://github.com/Resdii-JSC/vars-3d-api.git',
+                                                        refspec      : "+refs/pull/${ghprbPullId}/*:refs/remotes/origin/pr/${ghprbPullId}/*"
                                                 ]]
                     )
                 }
