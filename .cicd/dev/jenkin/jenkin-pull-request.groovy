@@ -36,11 +36,11 @@ pipeline {
                     echo "GhprbSourceBranch: ${ghprbSourceBranch}"
                     echo "GhprbTargetBranch: ${ghprbTargetBranch}"
                     echo "sha1: ${sha1}"
-                    
+
 
                     checkout scmGit(
                             branches: [[name: '${ghprbActualCommit}']],
-                            extensions: [cleanBeforeCheckout(deleteUntrackedNestedRepositories: true)],
+                            extensions: [],
                             userRemoteConfigs: [[
                                                         credentialsId: 'pat_github',
                                                         name: 'origin',
